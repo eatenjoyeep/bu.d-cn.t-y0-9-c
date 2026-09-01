@@ -1,0 +1,1282 @@
+/* ==========================================
+   1. 全局重置與 OLED 零耗電主題
+   ========================================== */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  user-select: none;
+  -webkit-user-select: none;
+  -webkit-tap-highlight-color: transparent;
+}
+
+:root {
+  --bg-color: #000000;          /* 底層背景純黑 (#000000) */
+  --text-main: #d0d0d5;         
+  --text-bright: #ffffff;       
+  --accent-green: #4cd964;      /* 禪意陽光綠 */
+  --dialog-bg: #1c1c1e;         
+  --color-gold: #E6C280;        /* 暖金邊框與標籤 */
+  --color-gold-glow: rgba(230, 194, 128, 0.35);
+}
+
+html, body {
+  width: 100%;
+  height: 100%;
+  background-color: var(--bg-color);
+  color: var(--text-main);
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  overflow: hidden;
+
+  /* 🌟 全域字體渲染銳利化 (防發糊防微暈) */
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* ==========================================
+   2. 全螢幕盲點擊區域
+   ========================================== */
+.touch-zone {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  width: 100vw;
+  height: 100dvh;
+  padding: 10px 10px 20px 10px;                /* 兩側統一留白 10px 視覺軸線 */
+  cursor: pointer;
+  background-color: var(--bg-color);
+}
+
+/* 頂部功能列：優化邊距防範 320px 寬度截斷 */
+.top-bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  padding: 8px 0;                              /* 兩側邊距改由父層 .touch-zone 的 10px 掌控 */
+  z-index: 10;
+  transition: opacity 0.3s ease;
+}
+
+.top-left-group {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.top-right-group {
+  display: flex;
+  align-items: center;
+  gap: 4px;                    /* 縮減圖示間距，保障極窄螢幕完整顯示 */
+}
+
+/* 頂部按鈕 */
+.icon-btn {
+  background: transparent;
+  border: none;
+  color: var(--text-bright);
+  font-size: 1.5rem;
+  padding: 6px 6px;
+  cursor: pointer;
+  border-radius: 50%;
+  transition: transform 0.05s ease;
+}
+
+.icon-btn:active {
+  transform: scale(0.85);
+  color: var(--accent-green);
+}
+
+/* ⚙️ 齒輪圖案微調視覺平衡 */
+#btn-settings {
+  font-size: 1.65rem;
+}
+
+/* 🟢 左上角深灰綠框膠囊組合 (緊密包覆當前目標 🎯 1080) */
+.top-left-capsule {
+  display: flex;
+  align-items: center;
+  background: #1a1a1c;
+  border: 1px solid var(--accent-green);
+  border-radius: 20px;
+  padding: 3px 8px;
+  cursor: pointer;
+  box-shadow: 0 0 8px rgba(76, 217, 100, 0.15);
+  transition: transform 0.05s ease, border-color 0.2s ease;
+  user-select: none;
+}
+
+.top-left-capsule:active {
+  transform: scale(0.95);
+}
+
+.capsule-target-badge {
+  color: var(--text-bright);
+  font-size: 0.95rem;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.leaf-motif {
+  font-size: 1.5rem;
+  line-height: 1;
+}
+
+.bottom-motif {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 30px;
+}
+
+.lamp-btn {
+  font-size: 1.6rem;
+  padding: 4px;
+  line-height: 1;
+}
+
+/* ==========================================
+   3. 核心大字計數器 (減光程度 0.25)
+   ========================================== */
+.counter-display {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-grow: 1;
+}
+
+#counter-value {
+  font-size: clamp(6rem, 26vw, 11rem);
+  font-weight: 200;
+  color: var(--text-bright);
+  letter-spacing: -3px;
+  line-height: 1;
+  font-variant-numeric: tabular-nums;
+  text-shadow: 0 0 25px rgba(76, 217, 100, 0.25);
+  transition: opacity 0.3s ease, transform 0.05s ease, text-shadow 0.3s ease;
+}
+
+#counter-value.tap-active {
+  transform: scale(0.97);
+}
+
+/* 💡 減光模式 (Dimmed Mode) */
+body.is-dimmed #counter-value {
+  opacity: 0.25 !important;
+  text-shadow: none !important;
+}
+
+body.is-dimmed .bottom-motif {
+  opacity: 0.3;
+}
+
+/* 頂部其他元件（膠囊、中間蓮花、紀錄、設定）進行減光 */
+body.is-dimmed .top-left-capsule,
+body.is-dimmed .leaf-motif,
+body.is-dimmed #btn-records,
+body.is-dimmed #btn-settings {
+  opacity: 0.3;
+}
+
+/* 眼睛 / 猴子切換按鈕：全程保持 100% 正常光暗 */
+#btn-toggle-eye {
+  opacity: 1 !important;
+}
+
+/* ==========================================
+   4. Modal 彈窗樣式 (精準左右 10px 邊距 + 極幼微光框線)
+   ========================================== */
+.modal {
+  border: 1px solid rgba(255, 255, 255, 0.1);  /* 極幼輕量微光外框，消除不合理解厚線感 */
+  border-radius: 20px;
+  background-color: var(--dialog-bg);
+  color: #ffffff;
+  padding: 0;
+  margin: auto;
+  width: 100%;                                 /* 精準解鎖橫向空間：彈窗滿版由內部 .modal-content 控制 10px 留白 */
+  max-width: 440px;                            /* 平板或大螢幕之保護上限 */
+  box-shadow: 0 12px 36px rgba(0,0,0,0.95);
+  max-height: 88vh;
+  overflow: hidden;
+}
+
+.modal::backdrop {
+  background: rgba(0, 0, 0, 0.85);
+}
+
+.modal-content {
+  padding: 12px 10px 18px 10px;                /* 內襯左右調整為 10px，徹底釋放內容橫向空間 */
+  max-height: 88vh;
+  overflow-y: auto;
+}
+
+.text-center {
+  text-align: center;
+}
+
+/* 🌸 頂部三欄 Header 導覽列 (極致釋放底部空間 + 極幼分隔線) */
+.modal-header-bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  min-height: 42px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08); /* 改用極幼半透明細線 */
+  margin-bottom: 12px;
+}
+
+.modal-header-bar h2 {
+  font-size: 20px !important;
+  font-weight: 700;
+  color: var(--text-bright);
+  margin-bottom: 0 !important;
+  text-align: center;
+}
+
+.header-placeholder {
+  width: 58px;                                 /* 對齊單邊按鈕寬度，維持中央標題精準置中 */
+  visibility: hidden;
+}
+
+/* 🌸 左側：取消 / 返回（香檳暖金微光風格 - 32px 外框 / 16px 大字） */
+.btn-header-back {
+  height: 32px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(230, 194, 128, 0.08);       /* 8% 香檳金底色 */
+  color: var(--color-gold);                     /* #E6C280 暖金字 */
+  border: 1px solid rgba(230, 194, 128, 0.35);  /* 柔和金外框 */
+  font-size: 16px;                              /* 升級至 16px 大字 */
+  font-weight: 600;
+  padding: 0 12px;                              /* 兩側充裕點擊邊界 */
+  border-radius: 8px;                           /* 保持沉穩 8px 微圓角 */
+  cursor: pointer;
+  transition: all 0.15s ease;
+  line-height: 1;
+}
+
+/* 🟢 右側：儲存 / 確定（實體陽光綠風格 - 32px 外框 / 16px 大字 / 純黑字） */
+.btn-header-save {
+  height: 32px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background-color: var(--accent-green);        /* 純正陽光綠底色，明確醒目 */
+  color: #000000;                               /* 高對比純黑字體 */
+  border: none;
+  font-size: 16px;                              /* 升級至 16px 大字 */
+  font-weight: 700;
+  padding: 0 14px;                              /* 兩側充裕點擊邊界 */
+  border-radius: 8px;                           /* 保持沉穩 8px 微圓角 */
+  box-shadow: 0 2px 8px rgba(76, 217, 100, 0.3); /* 質感綠色微光暈 */
+  cursor: pointer;
+  transition: all 0.15s ease;
+  line-height: 1;
+}
+
+.btn-header-back:active,
+.btn-header-save:active {
+  transform: scale(0.95);
+  opacity: 0.85;
+}
+
+/* 🟢 右側儲存按鈕：無變更時的停用狀態（暗淡綠 + 防點擊） */
+.btn-header-save:disabled {
+  opacity: 0.3 !important;
+  pointer-events: none !important;
+  box-shadow: none !important;
+}
+
+/* 📌 1. 大標題：設定為 22px */
+.modal-content h2 {
+  font-size: 22px;
+  font-weight: 700;
+  margin-bottom: 10px;
+  text-align: center;
+  color: var(--text-bright);
+}
+
+/* 🌸 迴向文彈窗專用樣式 (標題 22px / 輸入框 21px / 深度空間極致放大版) */
+.dedication-title {
+  font-size: 20px !important;
+}
+
+.dedication-input {
+  width: 100%;
+  height: min(385px, 52vh);                          /* 🌟 兼顧大小螢幕：上限 385px，短手機自動依比例縮放，確保全框完美顯示不截斷 */
+  padding: 12px 10px;                                /* 邊距調整對齊 10px 橫向 */
+  background-color: #121214;
+  border: 1px solid rgba(230, 194, 128, 0.25);      /* 柔和微金框線 */
+  border-radius: 12px;
+  color: var(--color-gold);
+
+  /* 🌟 錯覺視覺大字核心（升級至 21px 大字） */
+  font-size: 21px !important;                       
+  font-weight: 600;                                  /* 半粗體：產生筆劃光暈膨脹感 */
+  letter-spacing: 0.6px;                             /* 字距拉開：營造大字與沉靜氣場 */
+  line-height: 1.55;                                 /* 優雅舒適行高，字字分明 */
+  text-shadow: 0 0 1px rgba(230, 194, 128, 0.35);     /* 微金光暈：增加筆劃厚度感 */
+
+  caret-color: var(--color-gold);                    /* 打字游標設為香檳暖金色 */
+  resize: none;                                      /* 關閉手動拉伸，保持版面整潔 */
+  font-family: inherit;
+  outline: none;
+}
+
+.dedication-input:focus {
+  border-color: var(--color-gold);
+}
+
+/* 📌 4. 輔助說明標準：16px */
+.modal-content p {
+  font-size: 16px;             /* 16px 輔助字 */
+  color: #aaa;
+  margin-bottom: 12px;
+  line-height: 1.4;
+}
+
+.modal-content hr {
+  border: none;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  margin-bottom: 12px;
+}
+
+fieldset {
+  background: #121214;
+  border: 1px solid rgba(255, 255, 255, 0.08);       /* 極幼邊框 */
+  border-radius: 12px;
+  padding: 12px 10px;                                /* 邊距調整對齊 10px 橫向留白 */
+  margin-bottom: 12px;
+  width: 100%;
+}
+
+/* ⚙️ 齒輪設定彈窗分組標題：20px 暖金小標題 */
+legend {
+  font-size: 20px;
+  color: var(--color-gold);
+  font-weight: 700;
+  margin-bottom: 6px;
+  padding: 0 6px;
+  line-height: 1.2;
+}
+
+/* 輸入欄位通用優化 */
+.vertical-field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  text-align: left;
+  width: 100%;
+}
+
+.vertical-field span {
+  font-size: 18px;             /* 18px 標籤 (優化亮灰高清晰度) */
+  color: #d0d0d5;
+  font-weight: 500;
+}
+
+.vertical-field input[type="text"] {
+  width: 100%;
+  height: 42px;                /* 增大觸碰區域 */
+  padding: 8px 10px;           /* 10px 內襯 */
+  background-color: #121214;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 8px;
+  color: var(--color-gold);
+  font-size: 18px;             /* 18px 輸入字體 */
+  font-weight: 700;
+  transition: border-color 0.2s ease;
+}
+
+.vertical-field input[type="text"]:focus {
+  border-color: var(--color-gold);
+  outline: none;
+}
+
+/* ⚙️ 設定彈窗開關項 (極致滿寬 + 18px 正文) */
+.toggle-label, .input-label {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 0;
+  width: 100%;
+}
+
+.toggle-label span, .input-label span {
+  font-size: 18px;             /* 18px 正文字體 */
+  color: #ffffff;
+  font-weight: 500;
+  flex: 1;
+  min-width: 0;
+  line-height: 1.4;
+  word-break: break-word;
+}
+
+/* 🎛️ iOS 風格一粒膠囊型滑動開關 (Toggle Switch - 精緻微型版 32px x 18px) */
+.toggle-label input[type="checkbox"] {
+  appearance: none;
+  -webkit-appearance: none;
+  width: 32px;
+  height: 18px;
+  background-color: #3a3a3c;
+  border-radius: 9px;
+  position: relative;
+  outline: none;
+  cursor: pointer;
+  transition: background-color 0.25s ease;
+  flex-shrink: 0;
+}
+
+.toggle-label input[type="checkbox"]::after {
+  content: '';
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  width: 14px;
+  height: 14px;
+  background-color: #ffffff;
+  border-radius: 50%;
+  transition: transform 0.25s ease;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+}
+
+.toggle-label input[type="checkbox"]:checked {
+  background-color: var(--accent-green);
+}
+
+.toggle-label input[type="checkbox"]:checked::after {
+  transform: translateX(14px);
+}
+
+/* 🌸 輸入框外部單位「次」樣式 */
+.input-unit {
+  font-size: 18px;
+  color: #ffffff;
+  font-weight: 500;
+  white-space: nowrap;
+}
+
+#setting-streak-threshold {
+  width: 62px;
+  height: 36px;
+  padding: 4px;
+  font-size: 18px;             /* 18px 數字 */
+  font-weight: 700;
+  background: #000000;
+  border: 1px solid var(--accent-green);
+  color: #ffffff;
+  border-radius: 6px;
+  text-align: center;
+  outline: none;
+  flex-shrink: 0;
+}
+
+.margin-top-sm {
+  margin-top: 10px;
+}
+
+/* ==========================================
+   🎯 兩層式持誦管理 Modal 樣式 (Layer 1 光環列表 & Layer 2 詳情)
+   ========================================== */
+.preset-cards-container {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  max-height: none;                                  /* 🌟 解除 62vh 硬性限制，讓列表跟隨 Modal 88vh 動態延伸 */
+  overflow-y: auto;
+  margin-bottom: 8px;
+  padding-right: 0;
+  width: 100%;
+}
+
+/* 第一層功課卡片：優化極幼邊框與橫向內襯 */
+.preset-card-item {
+  background-color: #141416;
+  border: 1px solid rgba(255, 255, 255, 0.08);        /* 極幼細緻邊框 */
+  border-radius: 14px;
+  padding: 12px 10px;                                 /* 滿版橫向點擊邊界 */
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  width: 100%;
+  cursor: pointer;
+  transition: all 0.25s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+.preset-card-item:active {
+  transform: scale(0.98);
+}
+
+/* 🌟 已選項目：以暖金光環將其圈起來 (Glow Light Ring) */
+.preset-card-item.is-active-card {
+  border: 1px solid var(--color-gold);                /* 1px 幼細暖金框 */
+  background-color: #1c1914;
+  box-shadow: 0 0 14px var(--color-gold-glow), inset 0 0 10px rgba(230, 194, 128, 0.12);
+}
+
+.preset-card-main {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  flex: 1;
+}
+
+/* 標題與標籤區域：Flex 彈性佈局 */
+.preset-card-title-row {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-bottom: 2px;
+  line-height: 1.4;
+}
+
+/* 🌸 2. 小標題 / 功課名稱：設定為 20px (最多顯示 2 行) */
+.preset-title {
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--text-bright);
+  word-break: break-word;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.preset-card-item.is-active-card .preset-title {
+  color: var(--color-gold);
+}
+
+/* 🪷 5. 標籤字：整粒膠囊圈（含外框與文字）一同向下平移 */
+.active-badge {
+  display: none;
+  font-size: 14px;
+  color: var(--color-gold);
+  border: 1px solid var(--color-gold);
+  padding: 2px 8px;
+  border-radius: 10px;
+  background: rgba(230, 194, 128, 0.12);
+  font-weight: 600;
+  margin-left: 0;
+  vertical-align: middle;
+  white-space: nowrap;
+
+  /* 💡 確定做法：整粒膠囊連字一同向下移 2.5px，上方自然釋出呼吸感 */
+  transform: translateY(2.5px);
+}
+
+.preset-card-item.is-active-card .active-badge {
+  display: inline-flex;
+  align-items: center;
+}
+
+/* 📊 3. 普通字（進度數據全區）：精簡單行版 */
+.preset-card-info-row {
+  font-size: 17px;
+  color: #d0d0d5;
+}
+
+.preset-card-info-row strong {
+  color: var(--accent-green);
+  font-weight: 700;
+  font-size: 17px;
+  text-shadow: 0 0 8px rgba(76, 217, 100, 0.4);
+}
+
+/* 🎯 目標次數數字：柔光白 / 亮銀灰 (退居二線，不搶亮綠色焦點) */
+.preset-card-info-row span[id^="card-target-display"] {
+  color: #e0e0e5;
+  font-weight: 600;
+  font-size: 17px;
+}
+
+.preset-card-arrow {
+  font-size: 1.25rem;          /* 20px 箭頭 */
+  color: #66666a;
+  font-weight: 300;
+  padding-left: 4px;
+}
+
+.preset-card-item.is-active-card .preset-card-arrow {
+  color: var(--color-gold);
+}
+
+.layer2-active-action {
+  margin-bottom: 10px;
+  width: 100%;
+}
+
+.btn-set-active {
+  width: 100%;
+  height: 44px;
+  background-color: var(--color-gold);
+  color: #000000;
+  border: none;
+  border-radius: 10px;
+  font-size: 18px;             /* 18px 普通字按鈕 */
+  font-weight: 700;
+  cursor: pointer;
+  box-shadow: 0 4px 12px rgba(230, 194, 128, 0.25);
+  transition: transform 0.1s ease, background-color 0.2s ease;
+}
+
+.btn-set-active:active {
+  transform: scale(0.97);
+}
+
+.btn-set-active:disabled,
+.btn-set-active.is-already-active {
+  background-color: rgba(76, 217, 100, 0.15);
+  color: var(--accent-green);
+  border: 1px solid var(--accent-green);
+  box-shadow: none;
+  cursor: default;
+}
+
+/* 🌸 第 2 層 2段式卡片重構與高對比綠框視覺 */
+.layer2-card-section {
+  background: #121214;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 12px;
+  padding: 12px 10px;                          /* 滿版內襯邊距 */
+  width: 100%;
+}
+
+/* 第一段：2 行高可換行 Textarea 輸入框 */
+.input-title-textarea {
+  width: 100%;
+  height: 68px;               /* 放大高度至 68px */
+  padding: 10px 10px;         /* 10px 邊距 */
+  background-color: #000000;  /* 採用極致純黑背景，大幅提高對比度 */
+  border: 1px solid var(--accent-green); /* 統一為高對比鮮明綠框 */
+  border-radius: 8px;
+  color: var(--color-gold);   /* 沿用原本香檳暖金字體 */
+  font-size: 21px;            /* 放大字體至 21px 清楚閱讀 */
+  font-weight: 700;
+  line-height: 1.35;
+  resize: none;               /* 禁止使用者拖拉變形 */
+  font-family: inherit;
+  outline: none;
+  box-shadow: 0 0 6px rgba(76, 217, 100, 0.15);
+  overflow-y: auto;           /* 容納長英文字元或換行時之滾動 */
+  transition: height 0.25s ease-in-out, border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.input-title-textarea:focus {
+  height: 150px;              /* 聚焦時平滑伸展至 6 行高度 */
+  border-color: var(--accent-green);
+  box-shadow: 0 0 12px rgba(76, 217, 100, 0.35);
+}
+
+/* 第二段：進度與目標整合卡片 */
+.card-progress-row-v2 {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  width: 100%;
+}
+
+/* 1. 上半部：已完成次數 */
+.progress-info-line {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 18px;
+  color: #e0e0e5;
+}
+
+.progress-info-line strong {
+  color: var(--accent-green);
+  font-weight: 700;
+  font-size: 20px;
+  text-shadow: 0 0 8px rgba(76, 217, 100, 0.4);
+}
+
+/* 分隔線 */
+.card-divider-line {
+  height: 1px;
+  background-color: rgba(255, 255, 255, 0.08);
+  width: 100%;
+}
+
+/* 2. 下半部：設定目標左右排版 */
+.progress-target-line {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+}
+
+.progress-target-line .label-text {
+  font-size: 18px;
+  color: #d0d0d5;
+  font-weight: 500;
+  flex: 1;
+}
+
+.target-input-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 18px;
+  color: #ffffff;
+  font-weight: 500;
+}
+
+/* 右側高對比鮮明綠框數字輸入框 */
+.input-target-box {
+  width: 85px;
+  height: 38px;
+  padding: 4px 8px;
+  font-size: 18px;
+  font-weight: 700;
+  background: #000000;       /* 純黑底 */
+  border: 1px solid var(--accent-green); /* 鮮明綠框 */
+  color: #ffffff;
+  border-radius: 6px;
+  text-align: center;
+  outline: none;
+  box-shadow: 0 0 6px rgba(76, 217, 100, 0.15);
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.input-target-box:focus {
+  border-color: var(--accent-green);
+  box-shadow: 0 0 12px rgba(76, 217, 100, 0.35);
+}
+
+.btn-full-width {
+  width: 100%;
+}
+
+.is-hidden {
+  display: none !important;
+}
+
+.modal-danger-zone {
+  margin-top: 12px;
+  margin-bottom: 6px;
+  text-align: center;
+  width: 100%;
+}
+
+/* 🔴 紅框危險按鈕（提高權重，防止被 .modal-actions 通用按鈕樣式覆蓋） */
+.btn-danger-outline,
+.modal-actions .btn-danger-outline {
+  width: 100%;
+  background: transparent !important;
+  color: #ff3b30 !important;
+  border: 1px solid rgba(255, 59, 48, 0.5) !important;
+  height: 42px;
+  border-radius: 10px;
+  font-size: 16px;             /* 16px 輔助按鈕字體 */
+  font-weight: 700;
+  cursor: pointer;
+  transition: background 0.2s ease, transform 0.05s ease;
+}
+
+.btn-danger-outline:active,
+.modal-actions .btn-danger-outline:active {
+  background: rgba(255, 59, 48, 0.15) !important;
+  transform: scale(0.98);
+}
+
+.modal-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  margin-top: 12px;
+  width: 100%;
+}
+
+.between-actions {
+  justify-content: space-between;
+}
+
+.between-actions button {
+  flex: 1;                     /* 讓平行並排按鈕等寬平分空間 */
+}
+
+.center-actions {
+  justify-content: center;
+}
+
+/* 🟢 3. 普通字按鈕（包含關閉按鈕）：設定為 18px */
+.modal-actions button {
+  background-color: var(--accent-green);
+  color: #000;
+  border: none;
+  height: 44px;                /* 44px 標準高反饋按鈕 */
+  padding: 0 24px;
+  font-weight: 700;
+  border-radius: 10px;
+  cursor: pointer;
+  font-size: 18px;             /* 18px 普通字按鈕字體 */
+}
+
+.modal-actions .btn-secondary {
+  background-color: #3a3a3c;
+  color: #fff;
+}
+
+.modal-actions .btn-danger {
+  background-color: #ff3b30;
+  color: #fff;
+}
+
+.btn-danger-text {
+  background: transparent !important;
+  color: #ff3b30 !important;
+  border: none !important;
+  padding: 0 !important;
+  font-size: 16px !important;  /* 16px 輔助文字 */
+  text-decoration: underline;
+}
+
+/* ==========================================
+   📊 歷史紀錄 Modal (三段式卡片 layout - 22/20/19/16/14px)
+   ========================================== */
+.records-title {
+  font-size: 20px !important;
+  font-weight: 700;
+  color: var(--text-bright);
+  text-align: center;
+  margin-bottom: 0 !important;
+}
+
+.records-container {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-bottom: 10px;
+  width: 100%;
+}
+
+/* 第一段：連續持誦卡片 (優化極幼框線與橫向空間) */
+.record-streak-card {
+  background: #121214;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 12px;
+  padding: 12px 10px;                          /* 10px 留白對齊 */
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  width: 100%;
+}
+
+.record-streak-main {
+  font-size: 20px;            /* 重點字眼：20px */
+  font-weight: 700;
+  color: var(--text-bright);
+}
+
+.record-streak-main strong {
+  color: var(--color-gold);
+}
+
+/* 🌸 無框高清晰暖金副標題 (更亮、更粗、自然向上貼合) */
+.record-subhint {
+  font-size: 14px !important;
+  color: var(--color-gold);                   /* 高亮香檳暖金 */
+  font-weight: 600;                          /* 加粗筆劃，消除單薄感 */
+  letter-spacing: 0.5px;                     /* 微拉字距，字字輪廓清晰 */
+  text-shadow: 0 0 6px rgba(230, 194, 128, 0.25); /* 微光亮感，提升醒目度 */
+  line-height: 1.3;
+  margin-top: 2px;                           /* 向上緊貼主標題，無空氣感 */
+}
+
+/* 第二段與第三段：獨立卡片區塊 */
+.record-section {
+  background: #121214;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 12px;
+  padding: 12px 10px;                          /* 10px 留白對齊 */
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  width: 100%;
+}
+
+/* 19px 小標題 */
+.record-section-title {
+  font-size: 19px !important;
+  font-weight: 700;
+  color: var(--color-gold);
+  margin-bottom: 2px;
+}
+
+/* 數據內容盒子 */
+.record-card-box {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;                  /* 拉開兩行數據之間的上下距離 */
+  width: 100%;
+}
+
+/* 數據單行排版 (19px 統一字號) */
+.record-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+}
+
+/* 19px 正文標籤 (輕量清晰度優化版) */
+.record-row .record-label {
+  font-size: 19px !important;
+  color: #d0d0d5 !important;      /* 提升灰階對比，不失沉靜感 */
+  font-weight: 500 !important;     /* 加厚筆劃，改善細字暗淡問題 */
+  letter-spacing: 0.3px;           /* 微調字距，文字輪廓更銳利 */
+}
+
+.record-row .record-value {
+  font-size: 19px !important;
+  font-weight: 700;
+  color: var(--accent-green);
+}
+
+/* 🌸 歷史紀錄數據單位專用正文灰樣式 */
+.record-unit {
+  font-size: 19px !important;
+  font-weight: 500 !important;
+  color: #d0d0d5 !important;
+  margin-left: 2px;
+}
+
+/* ==========================================
+   5. 禪意歡迎畫面與返回退出卡片 (高高對比清析大字版)
+   ========================================== */
+.welcome-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100dvh;
+  background-color: var(--bg-color);
+  z-index: 999;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 20px 10px;
+  transition: opacity 0.4s ease, visibility 0.4s ease;
+}
+
+.welcome-overlay.is-hidden {
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+}
+
+.welcome-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  max-width: 440px;
+  width: 100%;
+}
+
+.welcome-header {
+  margin-bottom: 20px;
+}
+
+.welcome-motif {
+  font-size: clamp(3.2rem, 11vw, 4.2rem);
+  display: block;
+  margin-bottom: 6px;
+  color: var(--accent-green);
+}
+
+.welcome-title {
+  font-size: clamp(2rem, 7.5vw, 2.8rem);
+  font-weight: 300;
+  letter-spacing: 6px;
+  color: var(--text-bright);
+}
+
+.welcome-date-card {
+  background: #121214;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 20px;
+  padding: 18px 12px;
+  width: 100%;
+  margin-bottom: 24px;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.8);
+}
+
+/* 1. 陽曆日期：改用【高對比亮白】+ 放大 25% */
+.solar-date {
+  font-size: clamp(1.3rem, 4.5vw, 1.6rem);
+  color: #E8E8ED;
+  font-weight: 600;
+  margin-bottom: 8px;
+  letter-spacing: 0.5px;
+}
+
+/* 2. 農曆日期：維持亮綠色 + 增加微光暈與字級 */
+.lunar-date {
+  font-size: clamp(1.75rem, 6.5vw, 2.4rem);
+  font-weight: 700;
+  color: var(--accent-green);
+  margin-bottom: 12px;
+  text-shadow: 0 0 10px rgba(76, 217, 100, 0.25);
+}
+
+/* 3. 佛誕/齋日提醒：改用【香檳暖金高亮】+ 放大 25% */
+.buddhist-event {
+  font-size: clamp(1.2rem, 4vw, 1.4rem);
+  color: #F0D295;
+  font-weight: 600;
+  padding-top: 12px;
+  border-top: 1px dashed rgba(255, 255, 255, 0.15);
+  letter-spacing: 0.5px;
+}
+
+.welcome-quote-card {
+  padding: 10px 10px;
+  margin-bottom: 30px;
+  width: 100%;
+}
+
+/* 4. 佛語偈語：取消斜體發糊、放大 30%、字色改為【純白亮字】 */
+.buddhist-quote {
+  font-size: clamp(1.45rem, 5.2vw, 1.9rem);
+  line-height: 1.7;
+  color: #FFFFFF;
+  font-style: normal;                     /* 取消斜體，避免中文字邊緣發糊 */
+  font-weight: 500;
+  text-shadow: 0 0 12px rgba(255, 255, 255, 0.15);
+}
+
+.welcome-action {
+  width: 100%;
+}
+
+.welcome-hint {
+  width: 100%;
+  padding: 16px 0;
+  font-size: clamp(1.1rem, 4vw, 1.25rem);
+  font-weight: 600;
+  color: var(--accent-green);
+  border: 1px solid rgba(76, 217, 100, 0.4);
+  background: rgba(76, 217, 100, 0.08);
+  border-radius: 35px;
+  letter-spacing: 2px;
+  box-shadow: 0 0 15px rgba(76, 217, 100, 0.15);
+  animation: pulse-border 2.5s infinite ease-in-out;
+}
+
+@keyframes pulse-border {
+  0%, 100% {
+    opacity: 0.8;
+    transform: scale(1);
+    box-shadow: 0 0 12px rgba(76, 217, 100, 0.15);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.02);
+    box-shadow: 0 0 22px rgba(76, 217, 100, 0.35);
+  }
+}
+
+.exit-card-overlay {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100vw;
+  z-index: 9999;
+  padding: 16px 10px 28px 10px;
+  display: flex;
+  justify-content: center;
+  transition: transform 0.3s cubic-bezier(0.1, 0.9, 0.2, 1), opacity 0.3s ease, visibility 0.3s ease;
+}
+
+.exit-card-overlay.is-hidden {
+  transform: translateY(100%);
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+}
+
+.exit-card-content {
+  background: rgba(28, 28, 30, 0.94);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 22px;
+  padding: 18px 12px;
+  width: 100%;
+  max-width: 440px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.85);
+}
+
+.exit-card-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  width: 100%;
+}
+
+.btn-exit-continue {
+  width: 100%;
+  padding: 16px 0;
+  font-size: clamp(1.1rem, 4.2vw, 1.35rem);
+  font-weight: 700;
+  border-radius: 16px;
+  border: none;
+  background-color: var(--accent-green);
+  color: #000000;
+  box-shadow: 0 4px 15px rgba(76, 217, 100, 0.25);
+  cursor: pointer;
+  letter-spacing: 1px;
+}
+
+.btn-exit-leave {
+  width: 100%;
+  padding: 14px 0;
+  font-size: clamp(1rem, 3.8vw, 1.2rem);
+  font-weight: 500;
+  border-radius: 16px;
+  border: 1px solid rgba(255, 149, 0, 0.35);
+  background: rgba(255, 149, 0, 0.08);
+  color: #ff9500;
+  cursor: pointer;
+}
+
+.btn-exit-continue:active, .btn-exit-leave:active {
+  transform: scale(0.96);
+}
+
+/* 🌸 聖號名稱顯示樣式（字體實體放大、零空氣感） */
+.mantra-title-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  margin-top: 14px;
+  margin-bottom: 2px;
+  user-select: none;
+  transition: opacity 0.3s ease;
+  width: 100%;
+}
+
+/* 🌸 聖號名稱顯示樣式（平衡清晰度與沉靜質感） */
+.mantra-title-display {
+  color: #F0D295;                           /* 🎨 香檳暖金 */
+  font-size: 1.95rem;
+  font-weight: 700;
+  letter-spacing: 0;
+  margin: 0;
+  text-shadow: 0 0 10px rgba(240, 210, 149, 0.4);
+  text-align: center;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 100%;
+  transition: letter-spacing 0.2s ease, font-size 0.2s ease;
+}
+
+.mantra-title-display.is-long-title {
+  font-size: 1.35rem;
+  letter-spacing: 0;
+}
+
+body.is-dimmed .mantra-title-container {
+  opacity: 0.25;
+}
+
+/* ==========================================
+   6. 目標圓滿彈窗專用按鈕 (垂直全寬，強效雙向置中)
+   ========================================== */
+.goal-actions {
+  flex-direction: column;
+  gap: 14px;
+  margin-top: 8px;
+  width: 100%;
+}
+
+.goal-actions button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 50px;
+  padding: 0;
+  line-height: 1;
+  font-size: clamp(1.1rem, 4.2vw, 1.35rem);
+  font-weight: 700;
+  letter-spacing: 1px;
+  border-radius: 16px;
+  cursor: pointer;
+  transition: transform 0.1s ease;
+}
+
+.goal-actions #btn-complete-done {
+  background-color: var(--accent-green);
+  color: #000;
+  border: none;
+  box-shadow: 0 4px 15px rgba(76, 217, 100, 0.25);
+}
+
+.goal-actions .btn-back-chant {
+  background: rgba(255, 149, 0, 0.08);
+  color: #ff9500;
+  border: 1px solid rgba(255, 149, 0, 0.35);
+  font-weight: 500;
+  box-shadow: none;
+}
+
+.goal-actions button:active {
+  transform: scale(0.96);
+}
+
+/* ==========================================
+   🌸 未儲存變更確認 Modal 專用按鈕樣式 (靠右 + 自然等寬)
+   ========================================== */
+#unsaved-dialog .modal-actions {
+  justify-content: flex-end;
+  gap: 10px;
+}
+
+/* 設定最小寬度 112px，使 4 字與 5 字按鈕自然等寬 */
+#unsaved-dialog .modal-actions button {
+  min-width: 112px;
+  height: 44px;
+  font-size: 18px;
+  padding: 0 12px;
+  border-radius: 10px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* 左側：放棄並返回 (方案 A 極淡透光紅) */
+#unsaved-dialog .btn-unsaved-abandon {
+  background: rgba(255, 59, 48, 0.08) !important;
+  color: #ff6b6b !important;
+  border: 1px solid rgba(255, 99, 71, 0.3) !important;
+  font-weight: 600 !important;
+  box-shadow: none;
+}
+
+/* 右側：繼續編輯 (標準儲存鍵字體風格：粗體 700 + 陽光綠) */
+#unsaved-dialog .btn-unsaved-continue {
+  background-color: var(--accent-green) !important;
+  color: #000000 !important;
+  border: none !important;
+  font-weight: 700 !important;
+  box-shadow: 0 3px 10px rgba(76, 217, 100, 0.2);
+}
+
+/* 按鈕按下反饋 */
+#unsaved-dialog .btn-unsaved-abandon:active,
+#unsaved-dialog .btn-unsaved-continue:active {
+  transform: scale(0.96);
+}
