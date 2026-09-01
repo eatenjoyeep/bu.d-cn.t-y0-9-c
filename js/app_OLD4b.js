@@ -30,8 +30,7 @@ const CONFIG = {
     lastActiveDate: "",       // YYYY-MM-DD
     lastMonth: "",            // YYYY-MM
     lastValidDate: "",        // 上次達標持誦日期 YYYY-MM-DD
-    lastValidCount: 0,        // 上次達標持誦次數
-    totalAccumulated: 0       // 🌸 總累積持誦次數
+    lastValidCount: 0         // 上次達標持誦次數
   },
 
   woodblockFreq: 220,         
@@ -234,12 +233,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // 🛡️ 歷史紀錄資料補全 (向下相容新增的欄位)
   if (!appState.history) {
-    appState.history = { todayCount: 0, monthCount: 0, lastMonthCount: 0, streakDays: 0, lastActiveDate: "", lastMonth: "", lastValidDate: "", lastValidCount: 0, totalAccumulated: 0 };
+    appState.history = { todayCount: 0, monthCount: 0, lastMonthCount: 0, streakDays: 0, lastActiveDate: "", lastMonth: "", lastValidDate: "", lastValidCount: 0 };
   }
   if (typeof appState.history.lastMonthCount !== 'number') appState.history.lastMonthCount = 0;
   if (typeof appState.history.lastValidDate !== 'string') appState.history.lastValidDate = "";
   if (typeof appState.history.lastValidCount !== 'number') appState.history.lastValidCount = 0;
-  if (typeof appState.history.totalAccumulated !== 'number') appState.history.totalAccumulated = 0;
 
   if (typeof appState.confirmReset !== 'boolean') appState.confirmReset = true;
   if (typeof appState.streakThreshold !== 'number') appState.streakThreshold = 21;
@@ -298,7 +296,6 @@ document.addEventListener('DOMContentLoaded', () => {
   const recordLast = document.getElementById('record-last');            // 上次持誦
   const recordMonth = document.getElementById('record-month');          // 今月總次數
   const recordLastMonth = document.getElementById('record-last-month'); // 上月總次數
-  const recordTotalAccumulated = document.getElementById('record-total-accumulated'); // 🌸 總累積持誦次數
   const recordThresholdHint = document.getElementById('record-threshold-hint');
   const btnResetHistory = document.getElementById('btn-reset-history');
   const btnCloseRecords = document.getElementById('btn-close-records');
@@ -309,7 +306,6 @@ document.addEventListener('DOMContentLoaded', () => {
   const settingVibrate = document.getElementById('setting-vibrate');
   const settingConfirmReset = document.getElementById('setting-confirm-reset');
   const settingStreakThreshold = document.getElementById('setting-streak-threshold');
-  const settingTotalAccumulated = document.getElementById('setting-total-accumulated'); // 🌸 校正總累積持誦次數輸入框
   const btnSaveSettings = document.getElementById('btn-save-settings');
 
   let initialSettingsSnap = {}; // 🌸 快照：紀錄系統設定開啟時的原始選項
@@ -381,7 +377,6 @@ document.addEventListener('DOMContentLoaded', () => {
     if (recordLast) recordLast.textContent = formatLastValidDisplay(appState.history.lastValidDate, appState.history.lastValidCount);
     if (recordMonth) recordMonth.textContent = appState.history.monthCount;
     if (recordLastMonth) recordLastMonth.textContent = appState.history.lastMonthCount || 0;
-    if (recordTotalAccumulated) recordTotalAccumulated.textContent = `${appState.history.totalAccumulated || 0} 次`;
     if (recordThresholdHint) recordThresholdHint.textContent = `(每日門檻：滿 ${appState.streakThreshold} 次)`;
   }
 
@@ -586,7 +581,6 @@ document.addEventListener('DOMContentLoaded', () => {
     appState.presets[appState.activePresetIndex].count = appState.count;
     appState.history.todayCount++;
     appState.history.monthCount++;
-    appState.history.totalAccumulated = (appState.history.totalAccumulated || 0) + 1; // 🌸 總累積持誦次數同步 +1
 
     // 🌟 當今日累計首度達到設定門檻（例如 21 次）時，連續天數正式 +1
     if (appState.history.todayCount === appState.streakThreshold) {
@@ -987,7 +981,7 @@ document.addEventListener('DOMContentLoaded', () => {
   btnResetHistory.addEventListener('click', () => {
     resetActionType = "history";
     resetModalTitle.textContent = "確認重置歷史紀錄？";
-    resetModalMsg.textContent = "此操作將清空今日、上次持誦、月度累計與連續持誦天數。（總累積次數將會保留，如需重置請至設定頁面修改）";
+    resetModalMsg.textContent = "此操作將清空今日、上次持誦、月度累計與連續持誦天數，無法復原。";
     resetDialog.showModal();
   });
 
@@ -1001,16 +995,12 @@ document.addEventListener('DOMContentLoaded', () => {
     if (isNaN(th) || th < 1) th = 21;
     if (th > 99) th = 99;
 
-    let totalAcc = parseInt(settingTotalAccumulated.value, 10);
-    if (isNaN(totalAcc) || totalAcc < 0) totalAcc = 0;
-
     const hasChanged = (
       settingSound.checked !== initialSettingsSnap.sound ||
       settingSoundChime.checked !== initialSettingsSnap.chime ||
       settingVibrate.checked !== initialSettingsSnap.vibrate ||
       settingConfirmReset.checked !== initialSettingsSnap.confirmReset ||
-      th !== initialSettingsSnap.streak ||
-      totalAcc !== initialSettingsSnap.totalAccumulated
+      th !== initialSettingsSnap.streak
     );
 
     btnSaveSettings.disabled = !hasChanged;
@@ -1026,8 +1016,7 @@ document.addEventListener('DOMContentLoaded', () => {
       chime: appState.chimeEnabled,
       vibrate: appState.vibrateEnabled,
       confirmReset: appState.confirmReset,
-      streak: appState.streakThreshold,
-      totalAccumulated: appState.history.totalAccumulated || 0
+      streak: appState.streakThreshold
     };
 
     settingSound.checked = appState.soundEnabled;
@@ -1035,9 +1024,6 @@ document.addEventListener('DOMContentLoaded', () => {
     settingVibrate.checked = appState.vibrateEnabled;
     settingConfirmReset.checked = appState.confirmReset;
     settingStreakThreshold.value = appState.streakThreshold;
-    if (settingTotalAccumulated) {
-      settingTotalAccumulated.value = appState.history.totalAccumulated || 0;
-    }
 
     btnSaveSettings.disabled = true; // 預設無變更，設為停用（暗淡綠）
     settingsDialog.showModal();
@@ -1048,9 +1034,6 @@ document.addEventListener('DOMContentLoaded', () => {
     el.addEventListener('change', updateSettingsSaveBtnState);
   });
   settingStreakThreshold.addEventListener('input', updateSettingsSaveBtnState);
-  if (settingTotalAccumulated) {
-    settingTotalAccumulated.addEventListener('input', updateSettingsSaveBtnState);
-  }
 
   // 保存設定
   btnSaveSettings.addEventListener('click', () => {
@@ -1063,12 +1046,6 @@ document.addEventListener('DOMContentLoaded', () => {
     if (isNaN(th) || th < 1) th = 21;
     if (th > 99) th = 99;
     appState.streakThreshold = th;
-
-    if (settingTotalAccumulated) {
-      let totalAcc = parseInt(settingTotalAccumulated.value, 10);
-      if (isNaN(totalAcc) || totalAcc < 0) totalAcc = 0;
-      appState.history.totalAccumulated = totalAcc;
-    }
 
     updateUI();
     StorageModule.saveData(appState);

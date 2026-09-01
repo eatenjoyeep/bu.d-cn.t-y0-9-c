@@ -417,15 +417,6 @@ legend {
   word-break: break-word;
 }
 
-/* 設定說明附註文字 (已同步歷史紀錄正文灰 #d0d0d5) */
-.setting-desc-text {
-  font-size: 14px !important;
-  color: #d0d0d5 !important;
-  margin-top: 6px;
-  margin-bottom: 0 !important;
-  line-height: 1.4;
-}
-
 /* 🎛️ iOS 風格一粒膠囊型滑動開關 (Toggle Switch - 精緻微型版 32px x 18px) */
 .toggle-label input[type="checkbox"] {
   appearance: none;

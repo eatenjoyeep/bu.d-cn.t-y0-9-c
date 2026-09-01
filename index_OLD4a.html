@@ -199,17 +199,12 @@
         <button id="btn-close-records" type="button" class="btn-header-back">關閉</button>
       </div>
       <div class="records-container">
-        <!-- 🔥 連續持誦與總累積卡片 -->
+        <!-- 🔥 連續持誦卡片 -->
         <div class="record-streak-card">
           <div class="record-streak-main">
             🔥 連續持誦：<strong id="record-streak">0 天</strong>
           </div>
           <div class="record-subhint" id="record-threshold-hint">(每日門檻：滿 21 次)</div>
-          
-          <div class="record-streak-main margin-top-sm">
-            🪷 總累積持誦：<strong id="record-total-accumulated">0 次</strong>
-          </div>
-          <div class="record-subhint">(獨立保存，不受清空影響，可於設定修改)</div>
         </div>
 
         <!-- ✨ 近期動態 -->
@@ -286,18 +281,6 @@
             <span class="input-unit">次</span>
           </div>
         </label>
-      </fieldset>
-
-      <fieldset>
-        <legend>📊 數據校正</legend>
-        <label class="input-label inline-target">
-          <span>校正總累積持誦次數：</span>
-          <div class="target-input-wrapper">
-            <input type="number" id="setting-total-accumulated" min="0" max="9999999" value="0" class="input-target-box" style="width: 100px;">
-            <span class="input-unit">次</span>
-          </div>
-        </label>
-        <p class="setting-desc-text">可在此手動修改或補填累積總數（例如：清空紀錄、更換裝置或補錄舊功課時使用）。</p>
       </fieldset>
     </form>
   </dialog>
