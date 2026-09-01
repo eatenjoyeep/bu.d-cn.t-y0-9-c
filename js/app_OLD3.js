@@ -665,8 +665,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // 關閉迴向文彈窗
   btnCloseDedication.addEventListener('click', () => {
-    // 🌸 隻讀模式下不可能有未儲存變更，直接關閉；非隻讀模式才比對變更
-    if (!dedicationText.readOnly && dedicationText.value !== initialDedicationText) {
+    if (dedicationText.value !== initialDedicationText) {
       unsavedDialog.showModal();
     } else {
       dedicationDialog.close();
@@ -675,8 +674,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // 🌸 迴向文彈窗 cancel 事件 (手機返回鍵/ESC 防護)
   dedicationDialog.addEventListener('cancel', (e) => {
-    // 🌸 隻讀模式下按返回鍵直接關閉，不攔截也不彈出未儲存提示
-    if (!dedicationText.readOnly && dedicationText.value !== initialDedicationText) {
+    if (dedicationText.value !== initialDedicationText) {
       e.preventDefault();
       unsavedDialog.showModal();
     }
@@ -1084,10 +1082,7 @@ document.addEventListener('DOMContentLoaded', () => {
   // 🌟 目標圓滿彈窗的新按鈕處理（點擊開啟迴向文彈窗 - 隻讀模式）
   btnCompleteDone.addEventListener('click', () => {
     goalDialog.close();
-    
-    // 🌸 補上快照同步：確保 baseline 與當前儲存資料一致
-    initialDedicationText = appState.dedicationText || '';
-    dedicationText.value = initialDedicationText;
+    dedicationText.value = appState.dedicationText || '';
 
     // 設定為隻讀、隱藏/停用儲存按鈕並主動取消焦點（無光標、無鍵盤）
     dedicationText.readOnly = true;
