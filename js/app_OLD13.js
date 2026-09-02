@@ -324,37 +324,16 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // 🌸 解鎖總累積輸入框按鈕點擊處理（切換圖示為 🔓、聚焦不選取）
   if (btnUnlockTotal && settingTotalAccumulated) {
-    let unlockBlurTimer = null;
-
     btnUnlockTotal.addEventListener('click', () => {
-      if (unlockBlurTimer) {
-        clearTimeout(unlockBlurTimer);
-        unlockBlurTimer = null;
-      }
       settingTotalAccumulated.removeAttribute('readonly');
       btnUnlockTotal.textContent = '🔓';
       settingTotalAccumulated.focus(); // 聚焦使游標停靠最右側，不執行 select() 以避免選取高亮背景遮擋
     });
 
-    settingTotalAccumulated.addEventListener('focus', () => {
-      if (unlockBlurTimer) {
-        clearTimeout(unlockBlurTimer);
-        unlockBlurTimer = null;
-      }
-    });
-
-    // 🌸 方案 A 自動鎖回：失焦時加入 150ms 緩衝判定與 clearTimeout 防護，避開 Android 軟鍵盤假失焦與過早鎖回
+    // 🌸 方案 A 自動鎖回：失焦時自動恢復為 readonly 與 🔒 圖示
     settingTotalAccumulated.addEventListener('blur', () => {
-      if (unlockBlurTimer) {
-        clearTimeout(unlockBlurTimer);
-      }
-      unlockBlurTimer = setTimeout(() => {
-        if (document.activeElement !== settingTotalAccumulated) {
-          settingTotalAccumulated.readOnly = true;
-          btnUnlockTotal.textContent = '🔒';
-        }
-        unlockBlurTimer = null;
-      }, 150);
+      settingTotalAccumulated.readOnly = true;
+      btnUnlockTotal.textContent = '🔒';
     });
   }
 
