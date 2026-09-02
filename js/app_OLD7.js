@@ -1052,17 +1052,6 @@ document.addEventListener('DOMContentLoaded', () => {
     settingTotalAccumulated.addEventListener('input', updateSettingsSaveBtnState);
   }
 
-  // 🌸 軟鍵盤 Enter / 前往 / 下一步處理：強制失焦收起軟鍵盤，並保持 Modal 開啟
-  [settingStreakThreshold, settingTotalAccumulated].forEach(inputEl => {
-    if (!inputEl) return;
-    inputEl.addEventListener('keydown', (e) => {
-      if (e.key === 'Enter') {
-        e.preventDefault();
-        inputEl.blur();
-      }
-    });
-  });
-
   // 保存設定
   btnSaveSettings.addEventListener('click', () => {
     appState.soundEnabled = settingSound.checked;
