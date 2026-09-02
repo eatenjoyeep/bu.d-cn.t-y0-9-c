@@ -354,7 +354,7 @@ document.addEventListener('DOMContentLoaded', () => {
           btnUnlockTotal.textContent = '🔒';
         }
         unlockBlurTimer = null;
-      }, 150);
+      }, 500);
     });
   }
 
