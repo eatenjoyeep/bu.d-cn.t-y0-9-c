@@ -1052,18 +1052,13 @@ document.addEventListener('DOMContentLoaded', () => {
     settingTotalAccumulated.addEventListener('input', updateSettingsSaveBtnState);
   }
 
-  // 🌸 軟鍵盤 Enter / 前往 / 下一步處理：獨立收起軟鍵盤，絕不跳轉至下一個輸入框
+  // 🌸 軟鍵盤 Enter / 前往 / 下一步處理：強制失焦收起軟鍵盤，並保持 Modal 開啟
   [settingStreakThreshold, settingTotalAccumulated].forEach(inputEl => {
     if (!inputEl) return;
-
-    // 設定 enterkeyhint 為 done，強制手機軟鍵盤顯示「完成」而非「下一步」，防止原生跳焦點
-    inputEl.setAttribute('enterkeyhint', 'done');
-
     inputEl.addEventListener('keydown', (e) => {
       if (e.key === 'Enter') {
         e.preventDefault();
-        e.stopPropagation(); // 阻擋事件冒泡，確保獨立性
-        inputEl.blur();      // 單純讓當前輸入框失焦並收起鍵盤
+        inputEl.blur();
       }
     });
   });
