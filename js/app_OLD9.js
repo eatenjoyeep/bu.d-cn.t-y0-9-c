@@ -1056,6 +1056,9 @@ document.addEventListener('DOMContentLoaded', () => {
   [settingStreakThreshold, settingTotalAccumulated].forEach(inputEl => {
     if (!inputEl) return;
 
+    // 設定 enterkeyhint 為 done，強制手機軟鍵盤顯示「完成」而非「下一步」，防止原生跳焦點
+    inputEl.setAttribute('enterkeyhint', 'done');
+
     inputEl.addEventListener('keydown', (e) => {
       if (e.key === 'Enter') {
         e.preventDefault();
