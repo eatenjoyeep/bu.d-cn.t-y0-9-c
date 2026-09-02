@@ -322,18 +322,13 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   });
 
-  // 🌸 解鎖總累積輸入框按鈕點擊處理（切換圖示為 🔓、聚焦不選取）
+  // 🌸 解鎖總累積輸入框按鈕點擊處理
   if (btnUnlockTotal && settingTotalAccumulated) {
     btnUnlockTotal.addEventListener('click', () => {
       settingTotalAccumulated.removeAttribute('readonly');
-      btnUnlockTotal.textContent = '🔓';
-      settingTotalAccumulated.focus(); // 聚焦使游標停靠最右側，不執行 select() 以避免選取高亮背景遮擋
-    });
-
-    // 🌸 方案 A 自動鎖回：失焦時自動恢復為 readonly 與 🔒 圖示
-    settingTotalAccumulated.addEventListener('blur', () => {
-      settingTotalAccumulated.readOnly = true;
-      btnUnlockTotal.textContent = '🔒';
+      settingTotalAccumulated.focus();
+      settingTotalAccumulated.select();
+      btnUnlockTotal.style.display = 'none';
     });
   }
 
@@ -1055,12 +1050,12 @@ document.addEventListener('DOMContentLoaded', () => {
     e.stopPropagation();
     setDimmedMode(false);
 
-    // 🌸 重置總累積輸入框為唯讀狀態與 🔒 圖示
+    // 🌸 重置總累積輸入框為唯讀狀態並顯示解鎖按鈕
     if (settingTotalAccumulated) {
       settingTotalAccumulated.readOnly = true;
     }
     if (btnUnlockTotal) {
-      btnUnlockTotal.textContent = '🔒';
+      btnUnlockTotal.style.display = 'inline-block';
     }
 
     // 🌸 儲存開啟時的初始狀態快照
@@ -1116,12 +1111,12 @@ document.addEventListener('DOMContentLoaded', () => {
     updateUI();
     StorageModule.saveData(appState);
 
-    // 🌸 儲存完成後恢復唯讀鎖定狀態與 🔒 圖示
+    // 🌸 儲存完成後恢復唯讀鎖定狀態與解鎖按鈕
     if (settingTotalAccumulated) {
       settingTotalAccumulated.readOnly = true;
     }
     if (btnUnlockTotal) {
-      btnUnlockTotal.textContent = '🔒';
+      btnUnlockTotal.style.display = 'inline-block';
     }
 
     settingsDialog.close();

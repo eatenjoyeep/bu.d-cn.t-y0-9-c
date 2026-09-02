@@ -1290,3 +1290,30 @@ body.is-dimmed .mantra-title-container {
 #unsaved-dialog .btn-unsaved-continue:active {
   transform: scale(0.96);
 }
+
+/* 🔒 鎖定狀態 (readonly)：非純白 / 深灰暗底，提示目前無法直接點擊輸入 */
+#setting-total-accumulated:read-only {
+  background-color: #1a1a1c !important; /* 沉靜深暗底色 */
+  color: #8e8e93 !important;            /* 柔和文字灰 */
+  border-color: #333333 !important;     /* 暗灰色邊框 */
+  opacity: 0.8;                         /* 微透感 */
+  cursor: pointer;                      /* 提示可點擊下方鎖頭解鎖 */
+}
+
+/* 🔓 解鎖狀態 (非 readonly)：同步上方門檻輸入框風格 (深黑底 + 純白字 + 綠框) */
+#setting-total-accumulated:not(:read-only) {
+  background-color: #000000 !important; /* 深黑底色 (與門檻框一致) */
+  color: #ffffff !important;            /* 純白文字 (清晰醒目) */
+  border: 1px solid #30d158 !important; /* 亮綠色高亮邊框 */
+  opacity: 1 !important;
+  cursor: text;
+}
+
+/* 🌸 消除頂部功能按鈕點擊或 Modal 關閉後殘留的 Focus 焦點外框 */
+.icon-btn:focus,
+.icon-btn:focus-visible,
+.top-left-capsule:focus,
+.top-left-capsule:focus-visible {
+  outline: none !important;
+  box-shadow: none !important;
+}
