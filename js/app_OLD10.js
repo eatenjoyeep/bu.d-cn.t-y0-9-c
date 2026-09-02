@@ -1052,6 +1052,19 @@ document.addEventListener('DOMContentLoaded', () => {
     settingTotalAccumulated.addEventListener('input', updateSettingsSaveBtnState);
   }
 
+  // 🌸 軟鍵盤 Enter / 前往 / 下一步處理：獨立收起軟鍵盤，絕不跳轉至下一個輸入框
+  [settingStreakThreshold, settingTotalAccumulated].forEach(inputEl => {
+    if (!inputEl) return;
+
+    inputEl.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter') {
+        e.preventDefault();
+        e.stopPropagation(); // 阻擋事件冒泡，確保獨立性
+        inputEl.blur();      // 單純讓當前輸入框失焦並收起鍵盤
+      }
+    });
+  });
+
   // 保存設定
   btnSaveSettings.addEventListener('click', () => {
     appState.soundEnabled = settingSound.checked;

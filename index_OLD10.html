@@ -282,7 +282,7 @@
         <label class="input-label inline-target margin-top-sm">
           <span>避免誤觸，達到此點擊次數才計入當日持誦：</span>
           <div class="target-input-wrapper">
-            <input type="number" id="setting-streak-threshold" min="1" max="99" value="21" oninput="if(this.value.length > 2) this.value = this.value.slice(0, 2);">
+            <input type="number" id="setting-streak-threshold" min="1" max="99" value="21" enterkeyhint="done" oninput="if(this.value.length > 2) this.value = this.value.slice(0, 2);">
             <span class="input-unit">次</span>
           </div>
         </label>
@@ -291,13 +291,12 @@
       <fieldset>
         <legend>📊 數據校正</legend>
         <label class="input-label inline-target">
-          <span>校正總累積持誦次數：</span>
+          <span>修改總累積持誦次數 (換裝置 、校正或復原時用)：</span>
           <div class="target-input-wrapper">
-            <input type="number" id="setting-total-accumulated" min="0" max="9999999" value="0" class="input-target-box" style="width: 100px;">
+            <input type="number" id="setting-total-accumulated" min="0" max="9999999" value="0" enterkeyhint="done" class="input-target-box" style="width: 100px;">
             <span class="input-unit">次</span>
           </div>
         </label>
-        <p class="setting-desc-text">可在此手動修改或補填累積總數（例如：清空紀錄、更換裝置或補錄舊功課時使用）。</p>
       </fieldset>
     </form>
   </dialog>
