@@ -310,7 +310,6 @@ document.addEventListener('DOMContentLoaded', () => {
   const settingConfirmReset = document.getElementById('setting-confirm-reset');
   const settingStreakThreshold = document.getElementById('setting-streak-threshold');
   const settingTotalAccumulated = document.getElementById('setting-total-accumulated'); // 🌸 校正總累積持誦次數輸入框
-  const btnUnlockTotal = document.getElementById('btn-unlock-total'); // 🌸 解鎖總累積輸入框按鈕
   const btnSaveSettings = document.getElementById('btn-save-settings');
 
   let initialSettingsSnap = {}; // 🌸 快照：紀錄系統設定開啟時的原始選項
@@ -321,35 +320,6 @@ document.addEventListener('DOMContentLoaded', () => {
       settingStreakThreshold.value = settingStreakThreshold.value.slice(0, 2);
     }
   });
-
-  // 🌸 解鎖總累積輸入框按鈕點擊處理
-  if (btnUnlockTotal && settingTotalAccumulated) {
-    btnUnlockTotal.addEventListener('click', () => {
-      settingTotalAccumulated.removeAttribute('readonly');
-      settingTotalAccumulated.focus();
-      settingTotalAccumulated.select();
-      btnUnlockTotal.style.display = 'none';
-    });
-  }
-
-  // 🌸 軟鍵盤 Enter / 完成按鍵處理：停留在設定畫面並收起軟鍵盤
-  if (settingStreakThreshold) {
-    settingStreakThreshold.addEventListener('keydown', (e) => {
-      if (e.key === 'Enter') {
-        e.preventDefault();
-        settingStreakThreshold.blur();
-      }
-    });
-  }
-
-  if (settingTotalAccumulated) {
-    settingTotalAccumulated.addEventListener('keydown', (e) => {
-      if (e.key === 'Enter') {
-        e.preventDefault();
-        settingTotalAccumulated.blur();
-      }
-    });
-  }
 
   const resetDialog = document.getElementById('reset-dialog');
   const resetModalTitle = document.getElementById('reset-modal-title');
@@ -1050,14 +1020,6 @@ document.addEventListener('DOMContentLoaded', () => {
     e.stopPropagation();
     setDimmedMode(false);
 
-    // 🌸 重置總累積輸入框為唯讀狀態並顯示解鎖按鈕
-    if (settingTotalAccumulated) {
-      settingTotalAccumulated.readOnly = true;
-    }
-    if (btnUnlockTotal) {
-      btnUnlockTotal.style.display = 'inline-block';
-    }
-
     // 🌸 儲存開啟時的初始狀態快照
     initialSettingsSnap = {
       sound: appState.soundEnabled,
@@ -1110,15 +1072,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
     updateUI();
     StorageModule.saveData(appState);
-
-    // 🌸 儲存完成後恢復唯讀鎖定狀態與解鎖按鈕
-    if (settingTotalAccumulated) {
-      settingTotalAccumulated.readOnly = true;
-    }
-    if (btnUnlockTotal) {
-      btnUnlockTotal.style.display = 'inline-block';
-    }
-
     settingsDialog.close();
   });
 
