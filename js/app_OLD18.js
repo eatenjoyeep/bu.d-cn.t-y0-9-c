@@ -304,7 +304,6 @@ document.addEventListener('DOMContentLoaded', () => {
   const btnCloseRecords = document.getElementById('btn-close-records');
 
   const settingsDialog = document.getElementById('settings-dialog');
-  const btnCloseSettings = document.getElementById('btn-close-settings'); // 🌸 補上返回按鈕 DOM
   const settingSound = document.getElementById('setting-sound');
   const settingSoundChime = document.getElementById('setting-sound-chime');
   const settingVibrate = document.getElementById('setting-vibrate');
@@ -1101,11 +1100,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
     btnSaveSettings.disabled = true; // 預設無變更，設為停用（暗淡綠）
     settingsDialog.showModal();
-  });
-
-  // 🌸 關閉設定彈窗 (＜ 返回)
-  btnCloseSettings.addEventListener('click', () => {
-    settingsDialog.close();
   });
 
   // 🌸 監聽設定頁面所有選項與數值變更
