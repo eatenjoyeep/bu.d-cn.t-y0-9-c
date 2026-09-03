@@ -253,7 +253,7 @@
   <dialog id="settings-dialog" class="modal">
     <form method="dialog" class="modal-content">
       <div class="modal-header-bar">
-        <button id="btn-close-settings" type="button" class="btn-header-back">＜ 返回</button>
+        <button id="btn-close-settings" type="button" class="btn-header-back" onclick="this.closest('dialog').close()">＜ 返回</button>
         <h2>念佛設定</h2>
         <button id="btn-save-settings" type="button" class="btn-header-save">儲存</button>
       </div>
@@ -294,10 +294,10 @@
           <span>修改總累積持誦次數 (換裝置 、校正或復原時用)：</span>
           <div style="display: flex; flex-direction: column; align-items: flex-end; gap: 4px;">
             <div class="target-input-wrapper">
-              <input type="number" id="setting-total-accumulated" min="0" max="99999999" value="0" class="input-target-box" style="width: 100px;" readonly enterkeyhint="done">
+              <input type="number" id="setting-total-accumulated" min="0" max="9999999" value="0" class="input-target-box" style="width: 100px;" readonly enterkeyhint="done">
               <span class="input-unit">次</span>
             </div>
-            <button id="btn-unlock-total" type="button" class="btn-unlock-icon" title="點擊解鎖修改" style="background: none; border: none; cursor: pointer; font-size: 1rem; padding: 0 4px; line-height: 1;">🔒</button>
+            <button id="btn-unlock-total" type="button" class="btn-unlock-icon" title="點擊校正數據" style="background: none; border: none; cursor: pointer; font-size: 1rem; padding: 0 4px; line-height: 1;">🔒</button>
           </div>
         </label>
       </fieldset>
@@ -357,18 +357,15 @@
 
   <!-- 🆕 9. 總累積持誦次數校正專屬 Sub-Modal -->
   <dialog id="total-calibrate-dialog" class="modal">
-    <div class="modal-content text-center">
-      <h2>🔓 校正總累積持誦次數</h2>
-      <p class="calibrate-hint">完成後會重新上鎖，記得點擊「儲存」方能生效</p>
-      
-      <div class="calibrate-input-wrapper">
-        <input type="number" id="input-calibrate-total" min="0" max="99999999" class="input-calibrate" enterkeyhint="done" oninput="if(this.value.length > 8) this.value = this.value.slice(0, 8);">
-        <span class="input-unit">次</span>
-      </div>
-
-      <div class="modal-actions">
+    <div class="modal-content">
+      <h2 class="records-title" style="text-align: center;">校正總累積持誦次數</h2>
+      <p style="color: var(--color-text-sub); margin: 12px 0 16px 0; font-size: 0.9rem; text-align: center;">請輸入校正後的總數：</p>
+      <label class="vertical-field">
+        <input type="number" id="input-calibrate-total" min="0" max="9999999" class="input-target-box" style="width: 100%; text-align: center; font-size: 1.2rem; padding: 8px 0;" enterkeyhint="done">
+      </label>
+      <div class="modal-actions" style="margin-top: 16px;">
         <button id="btn-cancel-total-calibrate" type="button" class="btn-secondary">取消</button>
-        <button id="btn-confirm-total-calibrate" type="button">確定</button>
+        <button id="btn-confirm-total-calibrate" type="button" class="btn-header-save" style="border-radius: 8px;">確定</button>
       </div>
     </div>
   </dialog>
