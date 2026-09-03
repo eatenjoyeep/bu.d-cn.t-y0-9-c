@@ -309,15 +309,9 @@ document.addEventListener('DOMContentLoaded', () => {
   const settingVibrate = document.getElementById('setting-vibrate');
   const settingConfirmReset = document.getElementById('setting-confirm-reset');
   const settingStreakThreshold = document.getElementById('setting-streak-threshold');
-  const settingTotalAccumulated = document.getElementById('setting-total-accumulated'); // 🌸 校正總累積持誦次數輸入框 (永遠 readonly)
-  const btnUnlockTotal = document.getElementById('btn-unlock-total'); // 🌸 開啟總累積校正小彈窗按鈕
+  const settingTotalAccumulated = document.getElementById('setting-total-accumulated'); // 🌸 校正總累積持誦次數輸入框
+  const btnUnlockTotal = document.getElementById('btn-unlock-total'); // 🌸 解鎖總累積輸入框按鈕
   const btnSaveSettings = document.getElementById('btn-save-settings');
-
-  // 🌸 數據校正小彈窗 DOM 元素
-  const totalCalibrateDialog = document.getElementById('total-calibrate-dialog');
-  const inputCalibrateTotal = document.getElementById('input-calibrate-total');
-  const btnConfirmTotalCalibrate = document.getElementById('btn-confirm-total-calibrate');
-  const btnCancelTotalCalibrate = document.getElementById('btn-cancel-total-calibrate');
 
   let initialSettingsSnap = {}; // 🌸 快照：紀錄系統設定開啟時的原始選項
 
@@ -328,35 +322,39 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   });
 
-  // 🌸 開啟總累積次數校正專屬小彈窗 (天然隔離 focus / blur 與第三方輸入法干擾)
-  if (btnUnlockTotal && totalCalibrateDialog) {
+  // 🌸 解鎖總累積輸入框按鈕點擊處理（切換圖示為 🔓、聚焦不選取）
+  if (btnUnlockTotal && settingTotalAccumulated) {
+    let unlockBlurTimer = null;
+
     btnUnlockTotal.addEventListener('click', () => {
-      let currentVal = parseInt(settingTotalAccumulated.value, 10);
-      if (isNaN(currentVal) || currentVal < 0) currentVal = 0;
-      inputCalibrateTotal.value = currentVal;
-      totalCalibrateDialog.showModal();
-      setTimeout(() => inputCalibrateTotal.focus(), 100);
-    });
-
-    const confirmCalibrate = () => {
-      let newVal = parseInt(inputCalibrateTotal.value, 10);
-      if (isNaN(newVal) || newVal < 0) newVal = 0;
-      settingTotalAccumulated.value = newVal;
-      updateSettingsSaveBtnState();
-      totalCalibrateDialog.close();
-    };
-
-    btnConfirmTotalCalibrate.addEventListener('click', confirmCalibrate);
-
-    btnCancelTotalCalibrate.addEventListener('click', () => {
-      totalCalibrateDialog.close();
-    });
-
-    inputCalibrateTotal.addEventListener('keydown', (e) => {
-      if (e.key === 'Enter') {
-        e.preventDefault();
-        confirmCalibrate();
+      if (unlockBlurTimer) {
+        clearTimeout(unlockBlurTimer);
+        unlockBlurTimer = null;
       }
+      settingTotalAccumulated.removeAttribute('readonly');
+      btnUnlockTotal.textContent = '🔓';
+      settingTotalAccumulated.focus(); // 聚焦使游標停靠最右側，不執行 select() 以避免選取高亮背景遮擋
+    });
+
+    settingTotalAccumulated.addEventListener('focus', () => {
+      if (unlockBlurTimer) {
+        clearTimeout(unlockBlurTimer);
+        unlockBlurTimer = null;
+      }
+    });
+
+    // 🌸 方案 A 自動鎖回：失焦時加入 150ms 緩衝判定與 clearTimeout 防護，避開 Android 軟鍵盤假失焦與過早鎖回
+    settingTotalAccumulated.addEventListener('blur', () => {
+      if (unlockBlurTimer) {
+        clearTimeout(unlockBlurTimer);
+      }
+      unlockBlurTimer = setTimeout(() => {
+        if (document.activeElement !== settingTotalAccumulated) {
+          settingTotalAccumulated.readOnly = true;
+          btnUnlockTotal.textContent = '🔒';
+        }
+        unlockBlurTimer = null;
+      }, 150);
     });
   }
 
@@ -366,6 +364,15 @@ document.addEventListener('DOMContentLoaded', () => {
       if (e.key === 'Enter') {
         e.preventDefault();
         settingStreakThreshold.blur();
+      }
+    });
+  }
+
+  if (settingTotalAccumulated) {
+    settingTotalAccumulated.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter') {
+        e.preventDefault();
+        settingTotalAccumulated.blur();
       }
     });
   }
@@ -1069,6 +1076,14 @@ document.addEventListener('DOMContentLoaded', () => {
     e.stopPropagation();
     setDimmedMode(false);
 
+    // 🌸 重置總累積輸入框為唯讀狀態與 🔒 圖示
+    if (settingTotalAccumulated) {
+      settingTotalAccumulated.readOnly = true;
+    }
+    if (btnUnlockTotal) {
+      btnUnlockTotal.textContent = '🔒';
+    }
+
     // 🌸 儲存開啟時的初始狀態快照
     initialSettingsSnap = {
       sound: appState.soundEnabled,
@@ -1097,6 +1112,9 @@ document.addEventListener('DOMContentLoaded', () => {
     el.addEventListener('change', updateSettingsSaveBtnState);
   });
   settingStreakThreshold.addEventListener('input', updateSettingsSaveBtnState);
+  if (settingTotalAccumulated) {
+    settingTotalAccumulated.addEventListener('input', updateSettingsSaveBtnState);
+  }
 
   // 保存設定
   btnSaveSettings.addEventListener('click', () => {
@@ -1118,6 +1136,14 @@ document.addEventListener('DOMContentLoaded', () => {
 
     updateUI();
     StorageModule.saveData(appState);
+
+    // 🌸 儲存完成後恢復唯讀鎖定狀態與 🔒 圖示
+    if (settingTotalAccumulated) {
+      settingTotalAccumulated.readOnly = true;
+    }
+    if (btnUnlockTotal) {
+      btnUnlockTotal.textContent = '🔒';
+    }
 
     settingsDialog.close();
   });
