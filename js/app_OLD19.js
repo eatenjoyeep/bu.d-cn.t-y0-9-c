@@ -984,16 +984,12 @@ document.addEventListener('DOMContentLoaded', () => {
     returnToTargetLayer1();
   });
 
-  // 🌸 未儲存變更彈窗：確認放棄變更並返回 (分流處理：迴向文 vs 系統設定 vs 第 2 層)
+  // 🌸 未儲存變更彈窗：確認放棄變更並返回 (分流處理：迴向文 vs 第 2 層)
   btnConfirmUnsaved.addEventListener('click', () => {
     if (dedicationDialog.open) {
       dedicationText.value = initialDedicationText;
       unsavedDialog.close();
       dedicationDialog.close();
-    } else if (settingsDialog.open) {
-      rollbackSettingsSnap();
-      unsavedDialog.close();
-      settingsDialog.close();
     } else {
       resetLayer2Fields();
       unsavedDialog.close();
@@ -1001,13 +997,11 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   });
 
-  // 🌸 未儲存變更彈窗：取消並繼續編輯 (分流處理：迴向文 vs 系統設定 vs 第 2 層)
+  // 🌸 未儲存變更彈窗：取消並繼續編輯 (分流處理：迴向文 vs 第 2 層)
   btnCancelUnsaved.addEventListener('click', () => {
     if (dedicationDialog.open) {
       unsavedDialog.close();
       dedicationText.focus();
-    } else if (settingsDialog.open) {
-      unsavedDialog.close();
     } else {
       unsavedDialog.close();
 
@@ -1023,18 +1017,13 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   });
 
-  // 🌸 未儲存變更彈窗：當用家在 Warning Modal 上直接按手機返回鍵時 (分流處理：迴向文 vs 系統設定 vs 第 2 層)
+  // 🌸 未儲存變更彈窗：當用家在 Warning Modal 上直接按手機返回鍵時 (分流處理：迴向文 vs 第 2 層)
   unsavedDialog.addEventListener('cancel', (e) => {
     if (dedicationDialog.open) {
       e.preventDefault();
       dedicationText.value = initialDedicationText;
       unsavedDialog.close();
       dedicationDialog.close();
-    } else if (settingsDialog.open) {
-      e.preventDefault();
-      rollbackSettingsSnap();
-      unsavedDialog.close();
-      settingsDialog.close();
     } else {
       resetLayer2Fields();
       returnToTargetLayer1();
@@ -1065,8 +1054,8 @@ document.addEventListener('DOMContentLoaded', () => {
   // ⚙ 按下「設定」按鈕：專屬開啟設定 Modal
   // --------------------------------------------------------------------------
   
-  // 🌸 檢查系統設定是否有未儲存的變更
-  function hasUnsavedSettingsChanges() {
+  // 🌸 動態更新系統設定儲存按鈕狀態
+  function updateSettingsSaveBtnState() {
     let th = parseInt(settingStreakThreshold.value, 10);
     if (isNaN(th) || th < 1) th = 21;
     if (th > 99) th = 99;
@@ -1075,7 +1064,7 @@ document.addEventListener('DOMContentLoaded', () => {
     if (isNaN(totalAcc) || totalAcc < 0) totalAcc = 0;
     if (totalAcc > 99999999) totalAcc = 99999999;
 
-    return (
+    const hasChanged = (
       settingSound.checked !== initialSettingsSnap.sound ||
       settingSoundChime.checked !== initialSettingsSnap.chime ||
       settingVibrate.checked !== initialSettingsSnap.vibrate ||
@@ -1083,33 +1072,8 @@ document.addEventListener('DOMContentLoaded', () => {
       th !== initialSettingsSnap.streak ||
       totalAcc !== initialSettingsSnap.totalAccumulated
     );
-  }
 
-  // 🌸 還原系統設定至開啟時的快照
-  function rollbackSettingsSnap() {
-    settingSound.checked = initialSettingsSnap.sound;
-    settingSoundChime.checked = initialSettingsSnap.chime;
-    settingVibrate.checked = initialSettingsSnap.vibrate;
-    settingConfirmReset.checked = initialSettingsSnap.confirmReset;
-    settingStreakThreshold.value = initialSettingsSnap.streak;
-    if (settingTotalAccumulated) {
-      settingTotalAccumulated.value = initialSettingsSnap.totalAccumulated;
-    }
-    updateSettingsSaveBtnState();
-  }
-
-  // 🌸 處理系統設定關閉/返回動作
-  function handleSettingsBackAction() {
-    if (hasUnsavedSettingsChanges()) {
-      unsavedDialog.showModal();
-    } else {
-      settingsDialog.close();
-    }
-  }
-
-  // 🌸 動態更新系統設定儲存按鈕狀態
-  function updateSettingsSaveBtnState() {
-    btnSaveSettings.disabled = !hasUnsavedSettingsChanges();
+    btnSaveSettings.disabled = !hasChanged;
   }
 
   btnSettings.addEventListener('click', (e) => {
@@ -1141,15 +1105,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // 🌸 關閉設定彈窗 (＜ 返回)
   btnCloseSettings.addEventListener('click', () => {
-    handleSettingsBackAction();
-  });
-
-  // 🌸 系統設定彈窗 cancel 事件 (手機返回鍵/ESC 防護)
-  settingsDialog.addEventListener('cancel', (e) => {
-    if (hasUnsavedSettingsChanges()) {
-      e.preventDefault();
-      unsavedDialog.showModal();
-    }
+    settingsDialog.close();
   });
 
   // 🌸 監聽設定頁面所有選項與數值變更
