@@ -368,13 +368,6 @@ document.addEventListener('DOMContentLoaded', () => {
         confirmCalibrate();
       }
     });
-
-    // 🌸 數據校正小彈窗關閉時，一律自動強制釋放 Focus 收起軟鍵盤（防殘留）
-    totalCalibrateDialog.addEventListener('close', () => {
-      if (document.activeElement === inputCalibrateTotal) {
-        inputCalibrateTotal.blur();
-      }
-    });
   }
 
   // 🌸 軟鍵盤 Enter / 完成按鍵處理：停留在設定畫面並收起軟鍵盤
