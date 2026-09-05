@@ -894,9 +894,9 @@ legend {
    📊 歷史紀錄 Modal (三段式卡片 layout - 22/20/19/16/14px)
    ========================================== */
 .records-title {
-  font-size: 20px !important;                 /* [A] 20px 大標題 */
+  font-size: 20px !important;
   font-weight: 700;
-  color: #a0a0a0 !important;                  /* [A] 顏色轉為 #a0a0a0 */
+  color: var(--text-bright);
   text-align: center;
   margin-bottom: 0 !important;
 }
@@ -922,20 +922,19 @@ legend {
 }
 
 .record-streak-main {
-  font-size: 22px;                            /* [C] [F] 22px 項目標題 */
+  font-size: 20px;            /* 重點字眼：20px */
   font-weight: 700;
-  color: #ffffff;                             /* [C] [F] 純白字體 */
+  color: var(--text-bright);
 }
 
 .record-streak-main strong {
-  font-size: 22px;                            /* [D] [G] 22px 突出數據 */
-  color: var(--color-gold);                   /* [D] [G] 香檳暖金 #E6C280 */
+  color: var(--color-gold);
 }
 
 /* 🌸 無框高清晰暖金副標題 (升級至 16px 大字，自然向上貼合) */
 .record-subhint {
-  font-size: 16px !important;                 /* [E] [H] 16px 門檻與補充說明 */
-  color: var(--color-gold);                   /* [E] [H] 香檳暖金 */
+  font-size: 16px !important;                 /* 升級至 16px 清晰大字 */
+  color: var(--color-gold);                   /* 高亮香檳暖金 */
   font-weight: 600;                          /* 加粗筆劃，消除單薄感 */
   letter-spacing: 0.5px;                     /* 微拉字距，字字輪廓清晰 */
   text-shadow: 0 0 6px rgba(230, 194, 128, 0.25); /* 微光亮感，提升醒目度 */
@@ -955,11 +954,11 @@ legend {
   width: 100%;
 }
 
-/* 24px 小標題 */
+/* 19px 小標題 */
 .record-section-title {
-  font-size: 24px !important;                 /* [I] [M] 24px 香檳暖金標題 */
+  font-size: 19px !important;
   font-weight: 700;
-  color: var(--color-gold);                   /* [I] [M] 香檳暖金 #E6C280 */
+  color: var(--color-gold);
   margin-bottom: 2px;
 }
 
@@ -971,7 +970,7 @@ legend {
   width: 100%;
 }
 
-/* 數據單行排版 (20px 統一字號) */
+/* 數據單行排版 (19px 統一字號) */
 .record-row {
   display: flex;
   justify-content: space-between;
@@ -979,25 +978,25 @@ legend {
   width: 100%;
 }
 
-/* 20px 正文標籤 (純白高對比版) */
+/* 19px 正文標籤 (輕量清晰度優化版) */
 .record-row .record-label {
-  font-size: 20px !important;                 /* [J] 20px 正文標籤 */
-  color: #ffffff !important;                  /* [J] 轉為 #ffffff 純白字 */
+  font-size: 19px !important;
+  color: #d0d0d5 !important;      /* 提升灰階對比，不失沉靜感 */
   font-weight: 500 !important;     /* 加厚筆劃，改善細字暗淡問題 */
   letter-spacing: 0.3px;           /* 微調字距，文字輪廓更銳利 */
 }
 
 .record-row .record-value {
-  font-size: 20px !important;                 /* [K] 20px 數據值 */
+  font-size: 19px !important;
   font-weight: 700;
   color: var(--accent-green);
 }
 
-/* 🌸 歷史紀錄數據單位專用純白樣式 */
+/* 🌸 歷史紀錄數據單位專用正文灰樣式 */
 .record-unit {
-  font-size: 20px !important;                 /* [L] 20px 數據單位 */
+  font-size: 19px !important;
   font-weight: 500 !important;
-  color: #ffffff !important;                  /* [L] 轉為 #ffffff 純白字 */
+  color: #d0d0d5 !important;
   margin-left: 2px;
 }
 
