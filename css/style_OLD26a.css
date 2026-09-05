@@ -664,8 +664,8 @@ legend {
 /* 第一段：2 行高可換行 Textarea 輸入框 */
 .input-title-textarea {
   width: 100%;
-  height: 84px;               /* 放大高度至 84px 配合 24px 大字舒爽不壓迫 */
-  padding: 8px 10px;          /* 微調上下內襯為 8px */
+  height: 74px;               /* 放大高度至 74px 配合 24px 大字舒爽不壓迫 */
+  padding: 10px 10px;         /* 10px 邊距 */
   background-color: #000000;  /* 採用極致純黑背景，大幅提高對比度 */
   border: 1px solid var(--accent-green); /* 統一為高對比鮮明綠框 */
   border-radius: 8px;

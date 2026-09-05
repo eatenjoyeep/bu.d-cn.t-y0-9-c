@@ -215,7 +215,7 @@ function formatLastValidDisplay(lastValidDateStr, lastValidCount) {
 document.addEventListener('DOMContentLoaded', () => {
   let appState = StorageModule.loadData(CONFIG);
 
-  // 🛡️ 舊資料向下相容升級處理 (轉化為 presets 結構，補全 count 屬性，並自動修剪 6 位數邊界)
+  // 🛡️ 舊資料向下相容升級處理 (轉化為 presets 結構，補全 count 屬性)
   if (!Array.isArray(appState.presets) || appState.presets.length < 3) {
     appState.presets = [
       { title: "南無阿彌陀佛", target: 1080, count: appState.count || 0 },
@@ -225,8 +225,6 @@ document.addEventListener('DOMContentLoaded', () => {
   } else {
     appState.presets.forEach(p => {
       if (typeof p.count !== 'number') p.count = 0;
-      if (typeof p.target !== 'number' || p.target < 0) p.target = 0;
-      if (p.target > 999999) p.target = 999999;
     });
   }
 
@@ -822,7 +820,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const preset = appState.presets[idx] || CONFIG.presets[idx];
 
     settingTitleSingle.value = preset.title;
-    settingTargetSingle.value = (preset.target > 999999) ? 999999 : preset.target;
+    settingTargetSingle.value = preset.target;
     settingCountSingle.textContent = preset.count || 0;
 
     updateLayer2SetActiveBtnUI();
@@ -847,7 +845,7 @@ document.addEventListener('DOMContentLoaded', () => {
   function resetLayer2Fields() {
     const preset = appState.presets[currentEditingIndex] || CONFIG.presets[currentEditingIndex];
     settingTitleSingle.value = preset.title || '';
-    settingTargetSingle.value = (preset.target > 999999) ? 999999 : (preset.target || 0);
+    settingTargetSingle.value = preset.target || 0;
     pendingActiveIndex = appState.activePresetIndex;
     updateLayer2SetActiveBtnUI();
     updateLayer2SaveBtnState();
@@ -859,7 +857,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
     let currentTarget = parseInt(settingTargetSingle.value, 10);
     if (isNaN(currentTarget) || currentTarget < 0) currentTarget = 0;
-    if (currentTarget > 999999) currentTarget = 999999;
 
     const titleChanged = (settingTitleSingle.value.trim() !== (preset.title || ''));
     const targetChanged = (currentTarget !== (preset.target || 0));
@@ -938,14 +935,9 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   });
 
-  // 🌸 第二層輸入與變更監聽：即時比對資料、截斷 6 位數上限並更新儲存按鈕狀態
+  // 🌸 第二層輸入與變更監聽：即時比對資料並更新儲存按鈕狀態
   settingTitleSingle.addEventListener('input', updateLayer2SaveBtnState);
-  settingTargetSingle.addEventListener('input', () => {
-    if (settingTargetSingle.value.length > 6) {
-      settingTargetSingle.value = settingTargetSingle.value.slice(0, 6);
-    }
-    updateLayer2SaveBtnState();
-  });
+  settingTargetSingle.addEventListener('input', updateLayer2SaveBtnState);
 
   // 第二層：「設為當前持誦功課」主按鈕
   btnSetActivePreset.addEventListener('click', () => {
@@ -986,7 +978,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
     let numVal = parseInt(settingTargetSingle.value, 10);
     if (isNaN(numVal) || numVal < 0) numVal = 0;
-    if (numVal > 999999) numVal = 999999;
 
     appState.presets[currentEditingIndex].title = tVal;
     appState.presets[currentEditingIndex].target = numVal;

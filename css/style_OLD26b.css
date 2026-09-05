@@ -664,25 +664,27 @@ legend {
 /* 第一段：2 行高可換行 Textarea 輸入框 */
 .input-title-textarea {
   width: 100%;
-  height: 84px;               /* 放大高度至 84px 配合 24px 大字舒爽不壓迫 */
-  padding: 8px 10px;          /* 微調上下內襯為 8px */
+  height: 82px;               /* 完美容納 2 行 24px 大字，徹底消除右側滾動條 */
+  padding: 8px 10px;          /* 微調上下 padding，釋放縱向空間 */
   background-color: #000000;  /* 採用極致純黑背景，大幅提高對比度 */
   border: 1px solid var(--accent-green); /* 統一為高對比鮮明綠框 */
   border-radius: 8px;
   color: var(--color-gold);   /* 沿用原本香檳暖金字體 */
   font-size: 24px;            /* [F] 24px 大字焦點主角文字 */
   font-weight: 700;
-  line-height: 1.35;
+  line-height: 1.3;           /* 緊湊清晰的行高 */
+  word-break: break-word;     /* 防止長英文單字溢出邊界 */
+  overflow-wrap: break-word;  /* 相容性補強 */
   resize: none;               /* 禁止使用者拖拉變形 */
   font-family: inherit;
   outline: none;
   box-shadow: 0 0 6px rgba(76, 217, 100, 0.15);
-  overflow-y: auto;           /* 容納長英文字元或換行時之滾動 */
+  overflow-y: auto;           /* 超過 2 行時才出現滾動條 */
   transition: height 0.25s ease-in-out, border-color 0.2s ease, box-shadow 0.2s ease;
 }
 
 .input-title-textarea:focus {
-  height: 150px;              /* 聚焦時平滑伸展至 6 行高度 */
+  height: 125px;              /* 兼顧短手機軟鍵盤，聚焦時舒適伸展至約 4-5 行 */
   border-color: var(--accent-green);
   box-shadow: 0 0 12px rgba(76, 217, 100, 0.35);
 }
