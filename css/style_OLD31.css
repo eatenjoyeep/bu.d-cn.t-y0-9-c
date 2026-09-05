@@ -1175,7 +1175,7 @@ legend {
 .btn-exit-continue {
   width: 100%;
   padding: 16px 0;
-  font-size: clamp(1.22rem, 4.8vw, 1.45rem);
+  font-size: clamp(1.1rem, 4.2vw, 1.35rem);
   font-weight: 700;
   border-radius: 16px;
   border: none;
@@ -1189,8 +1189,8 @@ legend {
 .btn-exit-leave {
   width: 100%;
   padding: 14px 0;
-  font-size: clamp(1.12rem, 4.2vw, 1.3rem);
-  font-weight: 600;
+  font-size: clamp(1rem, 3.8vw, 1.2rem);
+  font-weight: 500;
   border-radius: 16px;
   border: 1px solid rgba(255, 149, 0, 0.35);
   background: rgba(255, 149, 0, 0.08);
