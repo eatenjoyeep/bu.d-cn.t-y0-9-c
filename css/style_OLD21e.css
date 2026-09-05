@@ -229,9 +229,9 @@ body.is-dimmed #btn-settings {
 }
 
 .modal-header-bar h2 {
-  font-size: 20px !important;                 /* [B] 20px 大標題 */
+  font-size: 20px !important;
   font-weight: 700;
-  color: #a0a0a0;                             /* [B] 顏色改為 #a0a0a0 */
+  color: var(--text-bright);
   margin-bottom: 0 !important;
   text-align: center;
 }
@@ -250,7 +250,7 @@ body.is-dimmed #btn-settings {
   background: rgba(230, 194, 128, 0.08);       /* 8% 香檳金底色 */
   color: var(--color-gold);                     /* #E6C280 暖金字 */
   border: 1px solid rgba(230, 194, 128, 0.35);  /* 柔和金外框 */
-  font-size: 16px;                              /* [A] 16px 字體 */
+  font-size: 16px;                              /* 升級至 16px 大字 */
   font-weight: 600;
   padding: 0 12px;                              /* 兩側充裕點擊邊界 */
   border-radius: 8px;                           /* 保持沉穩 8px 微圓角 */
@@ -268,7 +268,7 @@ body.is-dimmed #btn-settings {
   background-color: var(--accent-green);        /* 純正陽光綠底色，明確醒目 */
   color: #000000;                               /* 高對比純黑字體 */
   border: none;
-  font-size: 16px;                              /* [C] 16px 字體 */
+  font-size: 16px;                              /* 升級至 16px 大字 */
   font-weight: 700;
   padding: 0 14px;                              /* 兩側充裕點擊邊界 */
   border-radius: 8px;                           /* 保持沉穩 8px 微圓角 */
@@ -354,9 +354,9 @@ fieldset {
   width: 100%;
 }
 
-/* ⚙️ 齒輪設定彈窗分組標題：24px 暖金小標題 */
+/* ⚙️ 齒輪設定彈窗分組標題：20px 暖金小標題 */
 legend {
-  font-size: 24px;                                   /* [D] 24px 暖金標題 */
+  font-size: 20px;
   color: var(--color-gold);
   font-weight: 700;
   margin-bottom: 6px;
@@ -397,7 +397,7 @@ legend {
   outline: none;
 }
 
-/* ⚙️ 設定彈窗開關項 (極致滿寬 + 20px 正文) */
+/* ⚙️ 設定彈窗開關項 (極致滿寬 + 18px 正文) */
 .toggle-label, .input-label {
   display: flex;
   justify-content: space-between;
@@ -408,7 +408,7 @@ legend {
 }
 
 .toggle-label span, .input-label span {
-  font-size: 20px;                                   /* [E] [F] 20px 正文與說明字體 */
+  font-size: 18px;             /* 18px 正文字體 */
   color: #ffffff;
   font-weight: 500;
   flex: 1;
@@ -465,17 +465,17 @@ legend {
 
 /* 🌸 輸入框外部單位「次」樣式 */
 .input-unit {
-  font-size: 20px;                                   /* [H] 20px 單位文字 */
+  font-size: 18px;
   color: #ffffff;
   font-weight: 500;
   white-space: nowrap;
 }
 
 #setting-streak-threshold {
-  width: 66px;
-  height: 40px;                                      /* 配合 20px 字體放寬微調高度 */
+  width: 62px;
+  height: 36px;
   padding: 4px;
-  font-size: 20px;                                   /* [G] 20px 數字 */
+  font-size: 18px;             /* 18px 數字 */
   font-weight: 700;
   background: #000000;
   border: 1px solid var(--accent-green);
@@ -742,10 +742,10 @@ legend {
 
 /* 右側高對比鮮明綠框數字輸入框 */
 .input-target-box {
-  width: 90px;
-  height: 40px;                                      /* [I] 配合 20px 微調高度與寬度 */
+  width: 85px;
+  height: 38px;
   padding: 4px 8px;
-  font-size: 20px;                                   /* [I] 20px 數字 */
+  font-size: 18px;
   font-weight: 700;
   background: #000000;       /* 純黑底 */
   border: 1px solid var(--accent-green); /* 鮮明綠框 */
