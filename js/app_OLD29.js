@@ -350,21 +350,10 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     const confirmCalibrate = () => {
-      let rawVal = inputCalibrateTotal.value.trim();
-      let newVal = parseInt(rawVal, 10);
-
-      // 🌸 方案 A：若為空白、非數字或負數，自動回復成原本的數字（不作錯誤覆蓋）
-      if (rawVal === "" || isNaN(newVal) || newVal < 0) {
-        let fallbackVal = parseInt(settingTotalAccumulated.value, 10);
-        if (isNaN(fallbackVal) || fallbackVal < 0) {
-          fallbackVal = initialSettingsSnap.totalAccumulated || 0;
-        }
-        settingTotalAccumulated.value = fallbackVal;
-      } else {
-        if (newVal > 99999999) newVal = 99999999;
-        settingTotalAccumulated.value = newVal;
-      }
-
+      let newVal = parseInt(inputCalibrateTotal.value, 10);
+      if (isNaN(newVal) || newVal < 0) newVal = 0;
+      if (newVal > 99999999) newVal = 99999999;
+      settingTotalAccumulated.value = newVal;
       updateSettingsSaveBtnState();
       totalCalibrateDialog.close();
     };
@@ -1099,7 +1088,7 @@ document.addEventListener('DOMContentLoaded', () => {
     if (th > 99) th = 99;
 
     let totalAcc = parseInt(settingTotalAccumulated.value, 10);
-    if (isNaN(totalAcc) || totalAcc < 0) totalAcc = initialSettingsSnap.totalAccumulated || 0;
+    if (isNaN(totalAcc) || totalAcc < 0) totalAcc = 0;
     if (totalAcc > 99999999) totalAcc = 99999999;
 
     return (
@@ -1199,7 +1188,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     if (settingTotalAccumulated) {
       let totalAcc = parseInt(settingTotalAccumulated.value, 10);
-      if (isNaN(totalAcc) || totalAcc < 0) totalAcc = appState.history.totalAccumulated || 0;
+      if (isNaN(totalAcc) || totalAcc < 0) totalAcc = 0;
       if (totalAcc > 99999999) totalAcc = 99999999;
       appState.history.totalAccumulated = totalAcc;
     }
