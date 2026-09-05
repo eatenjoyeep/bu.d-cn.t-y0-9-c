@@ -231,7 +231,7 @@ body.is-dimmed #btn-settings {
 .modal-header-bar h2 {
   font-size: 20px !important;                 /* [B] 20px 大標題 */
   font-weight: 700;
-  color: #c0c0c5 !important;                  /* [B] 顏色改為 #c0c0c5 柔亮銀灰 */
+  color: #c0c0c5;                             /* [B] 顏色改為 #c0c0c5 */
   margin-bottom: 0 !important;
   text-align: center;
 }
@@ -331,14 +331,12 @@ body.is-dimmed #btn-settings {
   border-color: var(--color-gold);
 }
 
-/* 📌 4. 輔助說明標準：17px 香檳暖金微光 */
+/* 📌 4. 輔助說明標準：16px */
 .modal-content p {
-  font-size: 17px;             /* 統一 17px 輔助字 */
-  color: var(--color-gold);    /* 香檳暖金 */
-  font-weight: 500;
-  letter-spacing: 0.5px;       /* 微調字距提升清晰感 */
+  font-size: 16px;             /* 16px 輔助字 */
+  color: #aaa;
   margin-bottom: 12px;
-  line-height: 1.45;
+  line-height: 1.4;
 }
 
 .modal-content hr {
@@ -855,7 +853,7 @@ legend {
 /* 🔓 總累積校正 Sub-Modal 專屬樣式 */
 .calibrate-hint {
   color: var(--color-gold) !important;
-  font-size: 17px;
+  font-size: 16px;
   font-weight: 500;
   letter-spacing: 0.5px;
   line-height: 1.45;
@@ -1263,7 +1261,7 @@ body.is-dimmed .mantra-title-container {
   height: 50px;
   padding: 0;
   line-height: 1;
-  font-size: 18px;             /* 統一為 18px 按鈕字體 */
+  font-size: clamp(1.1rem, 4.2vw, 1.35rem);
   font-weight: 700;
   letter-spacing: 1px;
   border-radius: 16px;
@@ -1302,7 +1300,7 @@ body.is-dimmed .mantra-title-container {
 #unsaved-dialog .modal-actions button {
   min-width: 112px;
   height: 44px;
-  font-size: 18px;             /* 18px 按鈕字體 */
+  font-size: 18px;
   padding: 0 12px;
   border-radius: 10px;
   display: inline-flex;
