@@ -539,23 +539,22 @@ legend {
   flex: 1;
 }
 
-/* 標題與標籤區域：外層容器宣告 24px 基準，確保 2.7em 與 2lh 精準算滿 2 行高度 */
+/* 標題與標籤區域：外層容器負責限高 2 行與裁切 */
 .preset-card-title-row {
   display: block;
   margin-bottom: 2px;
-  font-size: 24px;                   /* 🌟 宣告 24px 基準字號 */
   line-height: 1.35;
-  max-height: 2.7em;                 /* 2.7 * 24px = 64.8px 剛好完整顯示 2 行大字 */
-  overflow: hidden;                  /* 超過 2 行自動裁切 */
+  max-height: 2.7em;                 /* 1.35 line-height * 2 行 = 2.7em */
+  overflow: hidden;                  /* 超過 2 行自動隱藏 */
 }
 
-/* 🌸 [C] 功課名稱：純行內顯示，第二行自然向右延伸填滿，消除 BFC 透明牆 */
+/* 🌸 [C] 功課名稱：升級至 24px (改為 inline，第二行自然向右延伸填滿無透明牆) */
 .preset-title {
   font-size: 24px;
   font-weight: 700;
   color: var(--text-bright);
   word-break: break-word;
-  display: inline !important;        /* 關鍵：行內顯示消除透明牆 */
+  display: inline !important;        /* 關鍵解法：純行內顯示消除 BFC 透明牆 */
 }
 
 .preset-card-item.is-active-card .preset-title {

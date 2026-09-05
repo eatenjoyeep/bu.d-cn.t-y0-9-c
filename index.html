@@ -98,8 +98,8 @@
           <div class="preset-card-item" id="preset-card-0" data-index="0">
             <div class="preset-card-main">
               <div class="preset-card-title-row">
-                <span class="preset-title" id="card-title-display-0">南無阿彌陀佛</span>
                 <span class="active-badge" id="active-badge-0">🪷 啟用中</span>
+                <span class="preset-title" id="card-title-display-0">南無阿彌陀佛</span>
               </div>
               <div class="preset-card-info-row">
                 <span>進度：<strong id="card-count-display-0">0</strong> / <span id="card-target-display-0">1080</span> 次</span>
@@ -112,8 +112,8 @@
           <div class="preset-card-item" id="preset-card-1" data-index="1">
             <div class="preset-card-main">
               <div class="preset-card-title-row">
-                <span class="preset-title" id="card-title-display-1">南無觀世音菩薩</span>
                 <span class="active-badge" id="active-badge-1">🪷 啟用中</span>
+                <span class="preset-title" id="card-title-display-1">南無觀世音菩薩</span>
               </div>
               <div class="preset-card-info-row">
                 <span>進度：<strong id="card-count-display-1">0</strong> / <span id="card-target-display-1">1080</span> 次</span>
@@ -126,8 +126,8 @@
           <div class="preset-card-item" id="preset-card-2" data-index="2">
             <div class="preset-card-main">
               <div class="preset-card-title-row">
-                <span class="preset-title" id="card-title-display-2">大悲咒</span>
                 <span class="active-badge" id="active-badge-2">🪷 啟用中</span>
+                <span class="preset-title" id="card-title-display-2">大悲咒</span>
               </div>
               <div class="preset-card-info-row">
                 <span>進度：<strong id="card-count-display-2">0</strong> / <span id="card-target-display-2">21</span> 次</span>
@@ -175,7 +175,7 @@
             <div class="progress-target-line">
               <span class="label-text">設定目標 (0 為無限)：</span>
               <div class="target-input-wrapper">
-                <input type="number" id="setting-target-single" min="0" max="999999" class="input-target-box"> 次
+                <input type="number" id="setting-target-single" min="0" max="999999" class="input-target-box" oninput="if(this.value.length > 6) this.value = this.value.slice(0, 6);"> 次
               </div>
             </div>
           </div>

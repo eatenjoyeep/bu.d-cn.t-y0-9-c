@@ -268,7 +268,7 @@ body.is-dimmed #btn-settings {
   background-color: var(--accent-green);        /* 純正陽光綠底色，明確醒目 */
   color: #000000;                               /* 高對比純黑字體 */
   border: none;
-  font-size: 16px;                              /* 16px 字體 */
+  font-size: 16px;                              /* [C] 16px 字體 */
   font-weight: 700;
   padding: 0 14px;                              /* 兩側充裕點擊邊界 */
   border-radius: 8px;                           /* 保持沉穩 8px 微圓角 */
@@ -376,7 +376,7 @@ legend {
 }
 
 .vertical-field span {
-  font-size: 20px;             /* 20px 標籤 (純白高清晰度) */
+  font-size: 20px;             /* [E] 20px 標籤 (純白高清晰度) */
   color: #ffffff;
   font-weight: 500;
 }
@@ -539,33 +539,36 @@ legend {
   flex: 1;
 }
 
-/* 標題與標籤區域：外層容器宣告 24px 基準，確保 2.7em 與 2lh 精準算滿 2 行高度 */
+/* 標題與標籤區域：Flex 彈性佈局 */
 .preset-card-title-row {
-  display: block;
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 6px;
   margin-bottom: 2px;
-  font-size: 24px;                   /* 🌟 宣告 24px 基準字號 */
-  line-height: 1.35;
-  max-height: 2.7em;                 /* 2.7 * 24px = 64.8px 剛好完整顯示 2 行大字 */
-  overflow: hidden;                  /* 超過 2 行自動裁切 */
+  line-height: 1.4;
 }
 
-/* 🌸 [C] 功課名稱：純行內顯示，第二行自然向右延伸填滿，消除 BFC 透明牆 */
+/* 🌸 2. 小標題 / 功課名稱：設定為 20px (最多顯示 2 行) */
 .preset-title {
-  font-size: 24px;
+  font-size: 20px;
   font-weight: 700;
   color: var(--text-bright);
   word-break: break-word;
-  display: inline !important;        /* 關鍵：行內顯示消除透明牆 */
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .preset-card-item.is-active-card .preset-title {
   color: var(--color-gold);
 }
 
-/* 🪷 [D] 標籤字：14px 右上角浮動環繞 (無透明牆) */
+/* 🪷 5. 標籤字：整粒膠囊圈（含外框與文字）一同向下平移 */
 .active-badge {
   display: none;
-  float: right;
   font-size: 14px;
   color: var(--color-gold);
   border: 1px solid var(--color-gold);
@@ -573,39 +576,41 @@ legend {
   border-radius: 10px;
   background: rgba(230, 194, 128, 0.12);
   font-weight: 600;
-  margin-left: 8px;
-  margin-bottom: 4px;
+  margin-left: 0;
+  vertical-align: middle;
   white-space: nowrap;
-  line-height: 1.2;
+
+  /* 💡 確定做法：整粒膠囊連字一同向下移 2.5px，上方自然釋出呼吸感 */
+  transform: translateY(2.5px);
 }
 
 .preset-card-item.is-active-card .active-badge {
-  display: inline-block;
+  display: inline-flex;
+  align-items: center;
 }
 
-/* 📊 [E] [F] [G] 普通字與數據（進度數據全區）：升級至 20px */
+/* 📊 3. 普通字（進度數據全區）：精簡單行版 */
 .preset-card-info-row {
-  font-size: 20px;
+  font-size: 17px;
   color: #d0d0d5;
 }
 
 .preset-card-info-row strong {
   color: var(--accent-green);
   font-weight: 700;
-  font-size: 20px;
+  font-size: 17px;
   text-shadow: 0 0 8px rgba(76, 217, 100, 0.4);
 }
 
-/* 🎯 目標次數數字：20px 柔光白 / 亮銀灰 */
+/* 🎯 目標次數數字：柔光白 / 亮銀灰 (退居二線，不搶亮綠色焦點) */
 .preset-card-info-row span[id^="card-target-display"] {
   color: #e0e0e5;
   font-weight: 600;
-  font-size: 20px;
+  font-size: 17px;
 }
 
-/* 箭頭：[H] 微調為 18px */
 .preset-card-arrow {
-  font-size: 18px;             /* 18px 箭頭 */
+  font-size: 1.25rem;          /* 20px 箭頭 */
   color: #66666a;
   font-weight: 300;
   padding-left: 4px;
@@ -627,7 +632,7 @@ legend {
   color: #000000;
   border: none;
   border-radius: 10px;
-  font-size: 18px;             /* 18px 主要動作按鈕 */
+  font-size: 18px;             /* [D] 18px 主要動作按鈕 */
   font-weight: 700;
   cursor: pointer;
   box-shadow: 0 4px 12px rgba(230, 194, 128, 0.25);
@@ -659,13 +664,13 @@ legend {
 /* 第一段：2 行高可換行 Textarea 輸入框 (預設 96px 露出一半第 3 行作為滾動提示) */
 .input-title-textarea {
   width: 100%;
-  height: 96px;               /* 預設高度 96px 配合 24px 大字，露出一半第 3 行作為滾動提示 */
+  height: 96;               /* 調整預設高度至 96px 配合 24px 大字，露出一半第 3 行作為滾動提示 */
   padding: 8px 10px;          /* 微調上下內襯為 8px */
   background-color: #000000;  /* 採用極致純黑背景，大幅提高對比度 */
   border: 1px solid var(--accent-green); /* 統一為高對比鮮明綠框 */
   border-radius: 8px;
   color: var(--color-gold);   /* 沿用原本香檳暖金字體 */
-  font-size: 24px;            /* 24px 大字焦點主角文字 */
+  font-size: 24px;            /* [F] 24px 大字焦點主角文字 */
   font-weight: 700;
   line-height: 1.35;
   resize: none;               /* 禁止使用者拖拉變形 */
@@ -695,14 +700,14 @@ legend {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  font-size: 20px;            /* 20px 標籤與單位文字 (純白高清晰) */
+  font-size: 20px;            /* [G] [I] 20px 標籤與單位文字 (純白高清晰) */
   color: #ffffff;
 }
 
 .progress-info-line strong {
   color: var(--accent-green);
   font-weight: 700;
-  font-size: 20px;            /* 20px 亮綠粗體數字 */
+  font-size: 20px;            /* [H] 20px 亮綠粗體數字 */
   text-shadow: 0 0 8px rgba(76, 217, 100, 0.4);
 }
 
@@ -722,7 +727,7 @@ legend {
 }
 
 .progress-target-line .label-text {
-  font-size: 20px;            /* 20px 目標標籤文字 (純白高清晰) */
+  font-size: 20px;            /* [J] 20px 目標標籤文字 (純白高清晰) */
   color: #ffffff;
   font-weight: 500;
   flex: 1;
@@ -732,7 +737,7 @@ legend {
   display: flex;
   align-items: center;
   gap: 6px;
-  font-size: 20px;            /* 20px 目標單位「次」 */
+  font-size: 20px;            /* [L] 20px 目標單位「次」 */
   color: #ffffff;
   font-weight: 500;
 }
@@ -742,7 +747,7 @@ legend {
   width: 90px;
   height: 40px;               /* 配合 20px 微調高度與寬度 */
   padding: 4px 8px;
-  font-size: 20px;            /* 20px 純白粗體數字 */
+  font-size: 20px;            /* [K] 20px 純白粗體數字 */
   font-weight: 700;
   background: #000000;       /* 純黑底 */
   border: 1px solid var(--accent-green); /* 鮮明綠框 */
@@ -783,7 +788,7 @@ legend {
   border: 1px solid rgba(255, 59, 48, 0.5) !important;
   height: 42px;
   border-radius: 10px;
-  font-size: 16px;             /* 16px 輔助按鈕字體 */
+  font-size: 16px;             /* [M] 16px 輔助按鈕字體 */
   font-weight: 700;
   cursor: pointer;
   transition: background 0.2s ease, transform 0.05s ease;
@@ -891,9 +896,9 @@ legend {
    📊 歷史紀錄 Modal (三段式卡片 layout - 22/20/19/16/14px)
    ========================================== */
 .records-title {
-  font-size: 20px !important;                 /* 20px 大標題 */
+  font-size: 20px !important;                 /* [A] 20px 大標題 */
   font-weight: 700;
-  color: #c0c0c5 !important;                  /* 顏色轉為 #c0c0c5 */
+  color: #c0c0c5 !important;                  /* [A] 顏色轉為 #c0c0c5 */
   text-align: center;
   margin-bottom: 0 !important;
 }
