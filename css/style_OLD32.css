@@ -1011,10 +1011,9 @@ legend {
   z-index: 999;
   display: flex;
   justify-content: center;
+  align-items: center;
   padding: 20px 10px;
   transition: opacity 0.4s ease, visibility 0.4s ease;
-  overflow-y: auto;
-  -webkit-overflow-scrolling: touch;
 }
 
 .welcome-overlay.is-hidden {
@@ -1030,7 +1029,6 @@ legend {
   text-align: center;
   max-width: 440px;
   width: 100%;
-  margin: auto;
 }
 
 .welcome-header {
