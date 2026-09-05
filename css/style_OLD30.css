@@ -867,7 +867,7 @@ legend {
 }
 
 .input-calibrate {
-  width: 160px;                 /* 適合 10 位數之適中寬度 */
+  width: 140px;                 /* 適合 8 位數之適中寬度 */
   height: 40px;                 /* 沿用門檻輸入框高度 */
   padding: 4px 8px;
   background: #000000;          /* 純黑底色 */

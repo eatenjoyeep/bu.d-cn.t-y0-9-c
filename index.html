@@ -294,7 +294,7 @@
           <span>修改總累積持誦次數 (換裝置 、校正或復原時用)：</span>
           <div style="display: flex; flex-direction: column; align-items: flex-end; gap: 4px;">
             <div class="target-input-wrapper">
-              <input type="number" id="setting-total-accumulated" min="0" max="99999999" value="0" class="input-target-box" style="width: 100px;" readonly enterkeyhint="done">
+              <input type="number" id="setting-total-accumulated" min="0" max="9999999999" value="0" class="input-target-box" style="width: 120px;" readonly enterkeyhint="done">
               <span class="input-unit">次</span>
             </div>
             <button id="btn-unlock-total" type="button" class="btn-unlock-icon" title="點擊解鎖修改" style="background: none; border: none; cursor: pointer; font-size: 1rem; padding: 0 4px; line-height: 1;">🔒</button>
@@ -362,7 +362,7 @@
       <p class="calibrate-hint">完成後會重新上鎖，記得點擊「儲存」方能生效</p>
       
       <div class="calibrate-input-wrapper">
-        <input type="number" id="input-calibrate-total" min="0" max="99999999" class="input-calibrate" enterkeyhint="done" oninput="if(this.value.length > 8) this.value = this.value.slice(0, 8);">
+        <input type="number" id="input-calibrate-total" min="0" max="9999999999" class="input-calibrate" enterkeyhint="done" oninput="if(this.value.length > 10) this.value = this.value.slice(0, 10);">
         <span class="input-unit">次</span>
       </div>
 

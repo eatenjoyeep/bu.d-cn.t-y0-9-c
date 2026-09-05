@@ -336,16 +336,16 @@ document.addEventListener('DOMContentLoaded', () => {
     btnUnlockTotal.addEventListener('click', () => {
       let currentVal = parseInt(settingTotalAccumulated.value, 10);
       if (isNaN(currentVal) || currentVal < 0) currentVal = 0;
-      if (currentVal > 9999999999) currentVal = 9999999999;
+      if (currentVal > 99999999) currentVal = 99999999;
       inputCalibrateTotal.value = currentVal;
       totalCalibrateDialog.showModal();
       setTimeout(() => inputCalibrateTotal.focus(), 100);
     });
 
-    // 防呆：限制最多 10 位數輸入
+    // 防呆：限制最多 8 位數輸入
     inputCalibrateTotal.addEventListener('input', () => {
-      if (inputCalibrateTotal.value.length > 10) {
-        inputCalibrateTotal.value = inputCalibrateTotal.value.slice(0, 10);
+      if (inputCalibrateTotal.value.length > 8) {
+        inputCalibrateTotal.value = inputCalibrateTotal.value.slice(0, 8);
       }
     });
 
@@ -361,7 +361,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
         settingTotalAccumulated.value = fallbackVal;
       } else {
-        if (newVal > 9999999999) newVal = 9999999999;
+        if (newVal > 99999999) newVal = 99999999;
         settingTotalAccumulated.value = newVal;
       }
 
@@ -1100,7 +1100,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     let totalAcc = parseInt(settingTotalAccumulated.value, 10);
     if (isNaN(totalAcc) || totalAcc < 0) totalAcc = initialSettingsSnap.totalAccumulated || 0;
-    if (totalAcc > 9999999999) totalAcc = 9999999999;
+    if (totalAcc > 99999999) totalAcc = 99999999;
 
     return (
       settingSound.checked !== initialSettingsSnap.sound ||
@@ -1200,7 +1200,7 @@ document.addEventListener('DOMContentLoaded', () => {
     if (settingTotalAccumulated) {
       let totalAcc = parseInt(settingTotalAccumulated.value, 10);
       if (isNaN(totalAcc) || totalAcc < 0) totalAcc = appState.history.totalAccumulated || 0;
-      if (totalAcc > 9999999999) totalAcc = 9999999999;
+      if (totalAcc > 99999999) totalAcc = 99999999;
       appState.history.totalAccumulated = totalAcc;
     }
 
