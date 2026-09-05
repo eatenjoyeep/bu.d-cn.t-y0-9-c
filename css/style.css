@@ -231,7 +231,7 @@ body.is-dimmed #btn-settings {
 .modal-header-bar h2 {
   font-size: 20px !important;                 /* [B] 20px 大標題 */
   font-weight: 700;
-  color: #a0a0a0;                             /* [B] 顏色改為 #a0a0a0 */
+  color: #c0c0c5;                             /* [B] 顏色改為 #a0a0a0 */
   margin-bottom: 0 !important;
   text-align: center;
 }
@@ -297,7 +297,7 @@ body.is-dimmed #btn-settings {
   font-weight: 700;
   margin-bottom: 10px;
   text-align: center;
-  color: #a0a0a0;
+  color: #c0c0c5;
 }
 
 /* 🌸 迴向文彈窗專用樣式 (標題 22px / 輸入框 21px / 深度空間極致放大版) */
@@ -896,7 +896,7 @@ legend {
 .records-title {
   font-size: 20px !important;                 /* [A] 20px 大標題 */
   font-weight: 700;
-  color: #a0a0a0 !important;                  /* [A] 顏色轉為 #a0a0a0 */
+  color: #c0c0c5 !important;                  /* [A] 顏色轉為 #a0a0a0 */
   text-align: center;
   margin-bottom: 0 !important;
 }
