@@ -358,7 +358,7 @@ fieldset {
 
 /* ⚙️ 齒輪設定彈窗分組標題：24px 暖金小標題 */
 legend {
-  font-size: 24px;                                   /* 24px 暖金標題 */
+  font-size: 24px;                                   /* [D] 24px 暖金標題 */
   color: var(--color-gold);
   font-weight: 700;
   margin-bottom: 6px;
@@ -376,7 +376,7 @@ legend {
 }
 
 .vertical-field span {
-  font-size: 20px;             /* [E] 20px 標籤 (優化亮灰高清晰度) */
+  font-size: 18px;             /* 18px 標籤 (優化亮灰高清晰度) */
   color: #d0d0d5;
   font-weight: 500;
 }
@@ -410,7 +410,7 @@ legend {
 }
 
 .toggle-label span, .input-label span {
-  font-size: 20px;                                   /* 20px 正文與說明字體 */
+  font-size: 20px;                                   /* [E] [F] 20px 正文與說明字體 */
   color: #ffffff;
   font-weight: 500;
   flex: 1;
@@ -467,7 +467,7 @@ legend {
 
 /* 🌸 輸入框外部單位「次」樣式 */
 .input-unit {
-  font-size: 20px;                                   /* 20px 單位文字 */
+  font-size: 20px;                                   /* [H] 20px 單位文字 */
   color: #ffffff;
   font-weight: 500;
   white-space: nowrap;
@@ -477,7 +477,7 @@ legend {
   width: 66px;
   height: 40px;                                      /* 配合 20px 字體放寬微調高度 */
   padding: 4px;
-  font-size: 20px;                                   /* 20px 數字 */
+  font-size: 20px;                                   /* [G] 20px 數字 */
   font-weight: 700;
   background: #000000;
   border: 1px solid var(--accent-green);
@@ -632,7 +632,7 @@ legend {
   color: #000000;
   border: none;
   border-radius: 10px;
-  font-size: 18px;             /* [D] 18px 主要動作按鈕 */
+  font-size: 18px;             /* 18px 普通字按鈕 */
   font-weight: 700;
   cursor: pointer;
   box-shadow: 0 4px 12px rgba(230, 194, 128, 0.25);
@@ -664,13 +664,13 @@ legend {
 /* 第一段：2 行高可換行 Textarea 輸入框 */
 .input-title-textarea {
   width: 100%;
-  height: 74px;               /* 放大高度至 74px 配合 24px 大字舒爽不壓迫 */
+  height: 68px;               /* 放大高度至 68px */
   padding: 10px 10px;         /* 10px 邊距 */
   background-color: #000000;  /* 採用極致純黑背景，大幅提高對比度 */
   border: 1px solid var(--accent-green); /* 統一為高對比鮮明綠框 */
   border-radius: 8px;
   color: var(--color-gold);   /* 沿用原本香檳暖金字體 */
-  font-size: 24px;            /* [F] 24px 大字焦點主角文字 */
+  font-size: 21px;            /* 放大字體至 21px 清楚閱讀 */
   font-weight: 700;
   line-height: 1.35;
   resize: none;               /* 禁止使用者拖拉變形 */
@@ -700,14 +700,14 @@ legend {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  font-size: 20px;            /* [G] [I] 20px 標籤與單位文字 */
+  font-size: 18px;
   color: #e0e0e5;
 }
 
 .progress-info-line strong {
   color: var(--accent-green);
   font-weight: 700;
-  font-size: 20px;            /* [H] 20px 亮綠粗體數字 */
+  font-size: 20px;
   text-shadow: 0 0 8px rgba(76, 217, 100, 0.4);
 }
 
@@ -727,7 +727,7 @@ legend {
 }
 
 .progress-target-line .label-text {
-  font-size: 20px;            /* [J] 20px 目標標籤文字 */
+  font-size: 18px;
   color: #d0d0d5;
   font-weight: 500;
   flex: 1;
@@ -737,7 +737,7 @@ legend {
   display: flex;
   align-items: center;
   gap: 6px;
-  font-size: 20px;            /* [L] 20px 目標單位「次」 */
+  font-size: 18px;
   color: #ffffff;
   font-weight: 500;
 }
@@ -745,9 +745,9 @@ legend {
 /* 右側高對比鮮明綠框數字輸入框 */
 .input-target-box {
   width: 90px;
-  height: 40px;               /* 配合 20px 微調高度與寬度 */
+  height: 40px;                                      /* [I] 配合 20px 微調高度與寬度 */
   padding: 4px 8px;
-  font-size: 20px;            /* [K] 20px 純白粗體數字 */
+  font-size: 20px;                                   /* [I] 20px 數字 */
   font-weight: 700;
   background: #000000;       /* 純黑底 */
   border: 1px solid var(--accent-green); /* 鮮明綠框 */
@@ -788,7 +788,7 @@ legend {
   border: 1px solid rgba(255, 59, 48, 0.5) !important;
   height: 42px;
   border-radius: 10px;
-  font-size: 16px;             /* [M] 16px 輔助按鈕字體 */
+  font-size: 16px;             /* 16px 輔助按鈕字體 */
   font-weight: 700;
   cursor: pointer;
   transition: background 0.2s ease, transform 0.05s ease;
@@ -924,20 +924,20 @@ legend {
 }
 
 .record-streak-main {
-  font-size: 22px;                            /* 22px 項目標題 */
+  font-size: 22px;                            /* [C] [F] 22px 項目標題 */
   font-weight: 700;
-  color: #ffffff;                             /* 純白字體 */
+  color: #ffffff;                             /* [C] [F] 純白字體 */
 }
 
 .record-streak-main strong {
-  font-size: 22px;                            /* 22px 突出數據 */
-  color: var(--color-gold);                   /* 香檳暖金 #E6C280 */
+  font-size: 22px;                            /* [D] [G] 22px 突出數據 */
+  color: var(--color-gold);                   /* [D] [G] 香檳暖金 #E6C280 */
 }
 
 /* 🌸 無框高清晰暖金副標題 (升級至 16px 大字，自然向上貼合) */
 .record-subhint {
-  font-size: 16px !important;                 /* 16px 門檻與補充說明 */
-  color: var(--color-gold);                   /* 香檳暖金 */
+  font-size: 16px !important;                 /* [E] [H] 16px 門檻與補充說明 */
+  color: var(--color-gold);                   /* [E] [H] 香檳暖金 */
   font-weight: 600;                          /* 加粗筆劃，消除單薄感 */
   letter-spacing: 0.5px;                     /* 微拉字距，字字輪廓清晰 */
   text-shadow: 0 0 6px rgba(230, 194, 128, 0.25); /* 微光亮感，提升醒目度 */
@@ -959,9 +959,9 @@ legend {
 
 /* 24px 小標題 */
 .record-section-title {
-  font-size: 24px !important;                 /* 24px 香檳暖金標題 */
+  font-size: 24px !important;                 /* [I] [M] 24px 香檳暖金標題 */
   font-weight: 700;
-  color: var(--color-gold);                   /* 香檳暖金 #E6C280 */
+  color: var(--color-gold);                   /* [I] [M] 香檳暖金 #E6C280 */
   margin-bottom: 2px;
 }
 
@@ -983,23 +983,23 @@ legend {
 
 /* 20px 正文標籤 (純白高對比版) */
 .record-row .record-label {
-  font-size: 20px !important;                 /* 20px 正文標籤 */
-  color: #ffffff !important;                  /* 轉為 #ffffff 純白字 */
+  font-size: 20px !important;                 /* [J] 20px 正文標籤 */
+  color: #ffffff !important;                  /* [J] 轉為 #ffffff 純白字 */
   font-weight: 500 !important;     /* 加厚筆劃，改善細字暗淡問題 */
   letter-spacing: 0.3px;           /* 微調字距，文字輪廓更銳利 */
 }
 
 .record-row .record-value {
-  font-size: 20px !important;                 /* 20px 數據值 */
+  font-size: 20px !important;                 /* [K] 20px 數據值 */
   font-weight: 700;
   color: var(--accent-green);
 }
 
 /* 🌸 歷史紀錄數據單位專用純白樣式 */
 .record-unit {
-  font-size: 20px !important;                 /* 20px 數據單位 */
+  font-size: 20px !important;                 /* [L] 20px 數據單位 */
   font-weight: 500 !important;
-  color: #ffffff !important;                  /* 轉為 #ffffff 純白字 */
+  color: #ffffff !important;                  /* [L] 轉為 #ffffff 純白字 */
   margin-left: 2px;
 }
 
