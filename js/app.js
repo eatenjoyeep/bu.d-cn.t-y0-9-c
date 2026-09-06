@@ -11,7 +11,7 @@ const CONFIG = {
   presets: [
     { title: "南無阿彌陀佛", target: 1080, count: 0 },
     { title: "南無觀世音菩薩", target: 1080, count: 0 },
-    { title: "大悲咒", target: 21, count: 0 }
+    { title: "六字大明咒", target: 0, count: 0 }
   ],
   activePresetIndex: 0,       // 當前啟用的組合包索引 (0, 1, 2)
 
