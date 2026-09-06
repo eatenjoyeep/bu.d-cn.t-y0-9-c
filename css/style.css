@@ -1,6 +1,9 @@
 /* 🎛️ 無障礙字體縮放主開關 (支援放大用 100% / 鎖定不放大用 16px) */
 html {
-  font-size: 100%;
+  font-size: 100%; /* 支援無障礙用 100% / 鎖定不放大用 16px */
+  -webkit-text-size-adjust: 100%;
+  -moz-text-size-adjust: 100%;
+  text-size-adjust: 100%;
 }
 
 /* ==========================================
