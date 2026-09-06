@@ -236,13 +236,6 @@ body.is-dimmed #btn-settings {
   text-align: center;
 }
 
-.modal-header-title-box {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-}
-
 .header-placeholder {
   width: 58px;                                 /* 對齊單邊按鈕寬度，維持中央標題精準置中 */
   visibility: hidden;
@@ -502,17 +495,6 @@ legend {
 /* ==========================================
    🎯 兩層式持誦管理 Modal 樣式 (Layer 1 光環列表 & Layer 2 詳情)
    ========================================== */
-/* 🎯 Layer 1 頂部銀灰柔光重置提示 */
-.target-layer1-subhint {
-  text-align: center;
-  font-size: 15px;
-  color: #c0c0c5;                                /* 採用大標題柔亮銀灰，優雅退位 */
-  font-weight: 500;
-  letter-spacing: 0.5px;
-  margin-top: 2px;
-  line-height: 1.2;
-}
-
 .preset-cards-container {
   display: flex;
   flex-direction: column;
@@ -826,7 +808,7 @@ legend {
 }
 
 .between-actions button {
-  flex: 1;                     /* 讓平行的並排按鈕等寬平分空間 */
+  flex: 1;                     /* 讓平行並排按鈕等寬平分空間 */
 }
 
 .center-actions {
@@ -978,16 +960,6 @@ legend {
   margin-bottom: 2px;
 }
 
-/* 🌸 歷史紀錄 Modal 區塊標題旁之銀灰輔助小字 */
-.record-title-subhint {
-  font-size: 16px;
-  color: #c0c0c5;                             /* 採用大標題柔亮銀灰，優雅退位 */
-  font-weight: 500;
-  letter-spacing: 0.5px;
-  margin-left: 8px;                           /* 留下少許自然空白 */
-  display: inline-block;
-}
-
 /* 數據內容盒子 */
 .record-card-box {
   display: flex;
@@ -1027,7 +999,7 @@ legend {
 }
 
 /* ==========================================
-   5. 禪意歡迎畫面與返回退出卡片 (高對比清晰大字版)
+   5. 禪意歡迎畫面與返回退出卡片 (高高對比清析大字版)
    ========================================== */
 .welcome-overlay {
   position: fixed;
