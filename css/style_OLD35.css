@@ -939,13 +939,12 @@ legend {
 .record-streak-main {
   font-size: 22px;                            /* 22px 項目標題 */
   font-weight: 700;
-  color: #ffffff;                             /* 純白字體 (單位天/次自然沿用純白) */
+  color: #ffffff;                             /* 純白字體 */
 }
 
 .record-streak-main strong {
   font-size: 22px;                            /* 22px 突出數據 */
-  color: var(--accent-green);                 /* 陽光綠 #4cd964 (與下方列表對齊) */
-  text-shadow: none;                          /* 移除微光暈 */
+  color: var(--color-gold);                   /* 香檳暖金 #E6C280 */
 }
 
 /* 🌸 無框高清晰暖金副標題 (升級至 16px 大字，自然向上貼合) */
@@ -1099,9 +1098,9 @@ legend {
   letter-spacing: 0.5px;
 }
 
-/* 2. 農曆日期：維持亮綠色 + 精確響應式算式 (320px顯示26px / 412px顯示27px) */
+/* 2. 農曆日期：維持亮綠色 + 增加微光暈與字級 */
 .lunar-date {
-  font-size: clamp(1.625rem, 1.41rem + 1.1vw, 1.75rem);
+  font-size: clamp(1.75rem, 6.5vw, 2.4rem);
   font-weight: 700;
   color: var(--accent-green);
   margin-bottom: 12px;

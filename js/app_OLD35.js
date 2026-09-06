@@ -454,13 +454,13 @@ document.addEventListener('DOMContentLoaded', () => {
     mantraTitleDisplay.textContent = currentTitle;
     mantraTitleDisplay.classList.toggle('is-long-title', currentTitle.length >= 11);
 
-    // 🌸 更新歷史紀錄彈窗資料 (僅傳入數字，單位「天/次」由外層 span 維持純白)
-    if (recordStreak) recordStreak.textContent = appState.history.streakDays;
+    // 🌸 更新歷史紀錄彈窗資料 (數據數字發光，單位「次」回歸沉靜正文灰)
+    if (recordStreak) recordStreak.textContent = `${appState.history.streakDays} 天`;
     if (recordToday) recordToday.textContent = appState.history.todayCount;
     if (recordLast) recordLast.textContent = formatLastValidDisplay(appState.history.lastValidDate, appState.history.lastValidCount);
     if (recordMonth) recordMonth.textContent = appState.history.monthCount;
     if (recordLastMonth) recordLastMonth.textContent = appState.history.lastMonthCount || 0;
-    if (recordTotalAccumulated) recordTotalAccumulated.textContent = appState.history.totalAccumulated || 0;
+    if (recordTotalAccumulated) recordTotalAccumulated.textContent = `${appState.history.totalAccumulated || 0} 次`;
     if (recordThresholdHint) recordThresholdHint.textContent = `(每日門檻：滿 ${appState.streakThreshold} 次)`;
   }
 
